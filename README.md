@@ -1,5 +1,182 @@
 # HKUST_AI_email_manager
 
+> **English** | [中文版](#中文版)
+
+A Dify port of the original Windows desktop app `Email_manager_beta` v3.0.0 (Microsoft Graph):
+**one plugin (Email Manager) + one workflow (HKUST_AI_email_manager)**.
+
+The workflow signs in with a Microsoft device code, classifies school mail into S/A/B/C,
+writes the categories back to Outlook, and sends daily / weekly / on-demand `sum` HTML reports.
+
+> **Status**: v1.0 — verified on Dify Cloud (sign-in, classification, write-back, reports).
+> - Plugin **0.1.4**, workflow **86 nodes / 90 edges**, a single Schedule Trigger;
+> - Offline checks: DSL validation, all Code nodes smoke-tested, pipeline sample, 29 unit tests;
+> - A new user only fills **2 environment variables** (`EMAIL`, `RECIPIENT`); sign-in happens automatically through Dify e-mail.
+
+**GitHub**: <https://github.com/MiKasss666/HKUST_AI_email_manager>
+**Download (Release)**: <https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest>
+
+---
+
+## Download & install (recommended)
+
+1. Open [Releases](https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest) and download:
+   - `email_manager.difypkg` (Dify plugin)
+   - `HKUST_AI_email_manager.yml` (workflow DSL)
+2. Dify → Integrations → Install → **Local Package File** → pick `email_manager.difypkg`;
+3. Studio → Import DSL → pick `HKUST_AI_email_manager.yml`;
+4. Fill the 2 environment variables below → **Publish**.
+
+Full new-user walkthrough: **[docs/DISTRIBUTE.md](docs/DISTRIBUTE.md)**.
+
+---
+
+## Quick start
+
+### 1. Install the plugin
+
+Dify → Integrations → Install → **Local Package File** → `email_manager.difypkg`.
+Open `Email Manager` afterwards — it should list **15 tools**.
+
+### 2. Import the workflow
+
+Studio → Import DSL → **`workflows/HKUST_AI_email_manager.yml`**.
+
+Small fix-ups after import (generated draft, ~2 minutes):
+
+- Tool nodes with a red border: re-select the same tool under `Email Manager`;
+- The two LLM nodes (`Classify mail`, `Write one-liners`): pick a model of your workspace (e.g. `gpt-5.6-luna`).
+
+### 3. Environment variables (only 2 need editing)
+
+Settings → Environment Variables:
+
+| Variable | Value |
+|---|---|
+| `EMAIL` | your school e-mail |
+| `RECIPIENT` | where reports go (usually the same address) |
+
+Everything else is pre-filled:
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `SCHOOL_DOMAINS` | `ust.hk` | matches school mail |
+| `LANGUAGE` | `zh` | set `en` for English reports |
+| `URGENT_DAYS` / `SUMMARY_DAYS` / `CATCHUP_DAYS` | `14` / `7` / `7` | urgent window / report window / daily catch-up window |
+| `DRY_RUN` | `true` | keep `true` at first: classify only, no write-back |
+| `LETTERS` | `sabc` | default levels for manual reports |
+| `FORCE_ACTION` | `auto` | automatic mode; can force an action for testing |
+| `TENANT` / `CLIENT_ID` | `common` / empty | device-code tenant / optional own Entra client id |
+
+Click **Publish** afterwards — environment variable changes only apply when published.
+
+### 4. Sign in (automatic)
+
+1. Open **Access Point** and enable the **Schedule Trigger** (every 5 minutes);
+2. The first unsigned run e-mails a sign-in message to your **Dify account e-mail**
+   (device code + Microsoft link + form link);
+3. Authorize in the browser → open the form link → click **I have completed the sign-in**;
+4. The run resumes → `Poll sign-in` → `signed_in=true`; the next round starts classifying.
+
+### 5. Go automatic
+
+`FORCE_ACTION=auto`, `DRY_RUN=false` → Publish → enable the Schedule Trigger.
+
+---
+
+## What the workflow does
+
+### Every 5 minutes
+
+1. Read `FORCE_ACTION` (`auto` in normal mode);
+2. Not signed in → run the sign-in e-mail flow;
+3. Signed in → `state_get` → pause check → acquire lock → `collect` (headers only) →
+   classify (≤20 mails per round, a single LLM call) → strict validation → write-back
+   (only replaces its own S/A/B/C categories, keeps your labels) → advance baseline → unlock;
+4. On failure the baseline is not advanced; after 3 consecutive failed rounds it gives up and moves on.
+
+### Scheduled reports (automatic)
+
+| Time | Content |
+|---|---|
+| Every day **00:00–00:09** (first round) | Daily report: classified mail from the last day |
+| **Sunday 00:00–00:09** | Weekly report: `SUMMARY_DAYS` days (default 7); no extra daily report that day |
+
+The send date is recorded, so **nothing is sent twice on the same day**.
+
+### `FORCE_ACTION` manual actions
+
+| Value | Effect |
+|---|---|
+| `auto` | automatic mode (default) |
+| `login` | force a fresh device code; END outputs `user_code` / `verification_uri` |
+| `login_poll` | poll sign-in; `signed_in=true` means success |
+| `report_daily` | send a daily report now (testing) |
+| `report_weekly` | send a weekly report now (testing) |
+| `sum` | send a manual summary now (levels from `LETTERS`) |
+| `check` | self-check: sign-in / account / inbox count |
+| `resume` | clear an automatic pause |
+| `reset` | clear baseline, failed rounds, ignored list, report marks (test reset) |
+| `logout` | forget the Microsoft credential (token + pending device code) |
+
+---
+
+## Known limitations
+
+1. **Fix-ups after import**: tool nodes depend on the installed plugin id, so they may need re-selecting; LLM nodes need a model.
+2. **Dify environment variable types** are `string` / `number` / `secret` only (a boolean causes a draft 400).
+3. **Code nodes must define `def main(...)`** and their return keys must match the declared outputs exactly (the generators validate this).
+4. **Re-installing the plugin clears the Microsoft token**, so you have to sign in again.
+5. At most 2 triggers per workflow on Dify Cloud Sandbox; this version uses a single Schedule trigger.
+6. Real-time "new mail" triggers (Graph change subscriptions) are not implemented; the workflow polls every 5 minutes.
+
+---
+
+## Development
+
+```powershell
+# generate tools + the single workflow DSL
+py -3 scripts/gen_tools.py
+py -3 scripts/gen_workflows.py
+
+# validation + smoke tests
+py -3 scripts/validate_dsl.py
+py -3 scripts/smoke_code_nodes.py
+py -3 scripts/smoke_pipeline.py
+py -3 -m unittest discover -s plugin/email_manager/tests
+
+# package the plugin
+py -3 scripts/package_plugin.py
+
+# testing helper: clear project labels (S/A/B/C/Sum) on the newest N mails
+py -3 scripts/reset_categories.py --limit 30 --dry-run
+py -3 scripts/reset_categories.py --limit 30
+py -3 scripts/reset_categories.py --all --limit 50
+py -3 scripts/reset_categories.py --sign-out
+```
+
+---
+
+## Privacy & security
+
+- The plugin only accesses the signed-in user's own mailbox; the token lives in the plugin storage of each Dify workspace;
+- Mail bodies are only sent to **the model service you configure in Dify**;
+- Do not publish tokens, token caches, or screenshots containing mailbox content;
+- Device-code sign-in uses Microsoft's well-known public clients (same as the original desktop app) and needs no admin consent.
+
+More:
+
+- [Distribution guide for classmates](docs/DISTRIBUTE.md)
+- [Migration advice](docs/DIFY_MIGRATION_ADVICE.md)
+- [Single-workflow design](docs/PLAN_A_SINGLE_WORKFLOW.md)
+- [Dify Cloud + device code + distribution design](docs/PLAN_A_CLOUD_DEVICECODE_SHARE.md)
+
+---
+
+# 中文版
+
+> [English](#hkust_ai_email_manager) | **中文**
+
 把原来的 Windows 桌面程序 `Email_manager_beta` v3.0.0（Microsoft Graph 版）搬进 **Dify 网页版**：
 **一个插件（Email Manager）+ 一个工作流（HKUST_AI_email_manager）**。
 
@@ -155,7 +332,7 @@ py -3 scripts/reset_categories.py --sign-out
 
 - 插件只访问登录者本人邮箱；token 存在各自 Dify 工作区的插件存储里；
 - 邮件正文只发给**你在 Dify 里配置的模型服务**；
-- 不要把 `WEBHOOK_TOKEN`、token 缓存、含邮箱内容的截图发到公开仓库；
+- 不要把 token、token 缓存、含邮箱内容的截图发到公开仓库；
 - 设备码登录使用微软公开客户端（与原桌面程序一致），不需要管理员许可。
 
 背景与方案：
