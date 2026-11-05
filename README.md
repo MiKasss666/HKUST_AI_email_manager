@@ -31,8 +31,8 @@ writes the categories back to Outlook, and sends daily / weekly / on-demand `sum
 
 **Option B — install the plugin directly from GitHub**
 
-- Plugin repository: <https://github.com/mikasss666/email_manager>
-- Dify → Integrations → Install → **From GitHub** → paste `mikasss666/email_manager`
+- Plugin source: this repository (manifest.yaml at the repo root)
+- Dify → Integrations → Install → **From GitHub** → paste `MiKasss666/HKUST_AI_email_manager`
 - The workflow still comes from this repository's Release (`HKUST_AI_email_manager.yml`).
 
 Full new-user walkthrough: **[docs/DISTRIBUTE.md](docs/DISTRIBUTE.md)**.
@@ -151,7 +151,7 @@ py -3 scripts/gen_workflows.py
 py -3 scripts/validate_dsl.py
 py -3 scripts/smoke_code_nodes.py
 py -3 scripts/smoke_pipeline.py
-py -3 -m unittest discover -s plugin/email_manager/tests
+py -3 -m unittest discover -s tests
 
 # package the plugin
 py -3 scripts/package_plugin.py
@@ -213,8 +213,8 @@ More:
 
 **方式 B —— 直接从 GitHub 安装插件**
 
-- 插件仓库：<https://github.com/mikasss666/email_manager>
-- Dify → Integrations → Install → **From GitHub** → 填 `mikasss666/email_manager`
+- 插件源码：本仓库根目录（`manifest.yaml` 在仓库根目录）
+- Dify → Integrations → Install → **From GitHub** → 填 `MiKasss666/HKUST_AI_email_manager`
 - 工作流仍然从本仓库的 Release 下载（`HKUST_AI_email_manager.yml`）。
 
 完整的新用户步骤见 **[docs/DISTRIBUTE.md](docs/DISTRIBUTE.md)**。
@@ -330,7 +330,7 @@ py -3 scripts/gen_workflows.py
 py -3 scripts/validate_dsl.py
 py -3 scripts/smoke_code_nodes.py
 py -3 scripts/smoke_pipeline.py
-py -3 -m unittest discover -s plugin/email_manager/tests
+py -3 -m unittest discover -s tests
 
 # 打包插件
 py -3 scripts/package_plugin.py

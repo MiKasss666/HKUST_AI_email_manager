@@ -31,7 +31,7 @@ import sys
 import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PLUGIN_DIR = os.path.join(ROOT, "plugin", "email_manager")
+PLUGIN_DIR = ROOT
 STORE_PATH = os.path.join(ROOT, "build", "reset_categories_store.json")
 
 sys.path.insert(0, PLUGIN_DIR)

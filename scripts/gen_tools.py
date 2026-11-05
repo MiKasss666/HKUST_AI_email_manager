@@ -12,7 +12,7 @@ import os
 import textwrap
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOOLS_DIR = os.path.join(ROOT, "plugin", "email_manager", "tools")
+TOOLS_DIR = os.path.join(ROOT, "tools")
 AUTHOR = "mikasss666"
 
 

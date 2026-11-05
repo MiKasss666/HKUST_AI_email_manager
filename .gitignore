@@ -1,5 +1,6 @@
-__pycache__/
+﻿__pycache__/
 *.pyc
+*.pyo
 build/
-plugin/email_manager/tests/__pycache__/
 *.difypkg
+.pytest_cache/

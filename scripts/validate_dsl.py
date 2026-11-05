@@ -37,7 +37,7 @@ KNOWN_NODE_TYPES = {
 
 
 WITH_TOOL_REQUIRED = {}
-_TOOLS_DIR = os.path.join(ROOT, "plugin", "email_manager", "tools")
+_TOOLS_DIR = os.path.join(ROOT, "tools")
 for _path in glob.glob(os.path.join(_TOOLS_DIR, "*.yaml")):
     with open(_path, "r", encoding="utf-8") as _fh:
         _doc = yaml.safe_load(_fh)
