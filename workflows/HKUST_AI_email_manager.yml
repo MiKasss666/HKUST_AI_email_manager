@@ -1,0 +1,4239 @@
+app:
+  description: 'Automatic HKUST mailbox assistant: device-code sign-in, S/A/B/C classification, category write-back, daily/weekly HTML reports and a manual sum report, all in one Dify workflow.'
+  icon: 📬
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: HKUST_AI_email_manager
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - id: env-email
+    name: EMAIL
+    value_type: string
+    value: CHANGE_ME@connect.ust.hk
+    description: ''
+  - id: env-name
+    name: NAME
+    value_type: string
+    value: ''
+    description: ''
+  - id: env-student_id
+    name: STUDENT_ID
+    value_type: string
+    value: ''
+    description: ''
+  - id: env-school_domains
+    name: SCHOOL_DOMAINS
+    value_type: string
+    value: ust.hk
+    description: ''
+  - id: env-faculty
+    name: FACULTY
+    value_type: string
+    value: ''
+    description: ''
+  - id: env-courses
+    name: COURSES
+    value_type: string
+    value: ''
+    description: ''
+  - id: env-dorm_keywords
+    name: DORM_KEYWORDS
+    value_type: string
+    value: UG Hall, UGHall, UGHousing, Hall, 宿舍, 宿生, Student Housing, Residence, Dorm
+    description: ''
+  - id: env-urgent_days
+    name: URGENT_DAYS
+    value_type: number
+    value: 14
+    description: ''
+  - id: env-catchup_days
+    name: CATCHUP_DAYS
+    value_type: number
+    value: 7
+    description: ''
+  - id: env-summary_days
+    name: SUMMARY_DAYS
+    value_type: number
+    value: 7
+    description: ''
+  - id: env-recipient
+    name: RECIPIENT
+    value_type: string
+    value: CHANGE_ME@connect.ust.hk
+    description: ''
+  - id: env-language
+    name: LANGUAGE
+    value_type: string
+    value: zh
+    description: ''
+  - id: env-dry_run
+    name: DRY_RUN
+    value_type: string
+    value: 'true'
+    description: ''
+  - id: env-tenant
+    name: TENANT
+    value_type: string
+    value: common
+    description: ''
+  - id: env-client_id
+    name: CLIENT_ID
+    value_type: string
+    value: ''
+    description: ''
+  - id: env-letters
+    name: LETTERS
+    value_type: string
+    value: sabc
+    description: ''
+  - id: env-force_action
+    name: FORCE_ACTION
+    value_type: string
+    value: auto
+    description: ''
+  features:
+    file_upload:
+      enabled: false
+      allowed_file_extensions: []
+      allowed_file_types:
+      - image
+      - document
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      max_file_upload_limit: 5
+      number_limits: 1
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+  graph:
+    edges:
+    - data:
+        sourceType: trigger-schedule
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000001-1700000003-source-target
+      source: '1700000001'
+      sourceHandle: source
+      target: '1700000003'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000006-1700000007-source-target
+      source: '1700000006'
+      sourceHandle: source
+      target: '1700000007'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000007-1700000008-false-target
+      source: '1700000007'
+      sourceHandle: 'false'
+      target: '1700000008'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000007-1700000070-case-authorized-target
+      source: '1700000007'
+      sourceHandle: case-authorized
+      target: '1700000070'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000070-1700000071-case-login-target
+      source: '1700000070'
+      sourceHandle: case-login
+      target: '1700000071'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000070-1700000073-false-target
+      source: '1700000070'
+      sourceHandle: 'false'
+      target: '1700000073'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000071-1700000072-source-target
+      source: '1700000071'
+      sourceHandle: source
+      target: '1700000072'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000073-1700000074-case-login-poll-target
+      source: '1700000073'
+      sourceHandle: case-login-poll
+      target: '1700000074'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000073-1700000009-false-target
+      source: '1700000073'
+      sourceHandle: 'false'
+      target: '1700000009'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000074-1700000075-source-target
+      source: '1700000074'
+      sourceHandle: source
+      target: '1700000075'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000009-1700000010-false-target
+      source: '1700000009'
+      sourceHandle: 'false'
+      target: '1700000010'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000009-1700000038-case-sum-target
+      source: '1700000009'
+      sourceHandle: case-sum
+      target: '1700000038'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000010-1700000012-case-check-target
+      source: '1700000010'
+      sourceHandle: case-check
+      target: '1700000012'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000010-1700000011-false-target
+      source: '1700000010'
+      sourceHandle: 'false'
+      target: '1700000011'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000011-1700000014-case-resume-target
+      source: '1700000011'
+      sourceHandle: case-resume
+      target: '1700000014'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000011-1700000090-false-target
+      source: '1700000011'
+      sourceHandle: 'false'
+      target: '1700000090'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000090-1700000091-case-reset-target
+      source: '1700000090'
+      sourceHandle: case-reset
+      target: '1700000091'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000090-1700000093-false-target
+      source: '1700000090'
+      sourceHandle: 'false'
+      target: '1700000093'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000093-1700000094-case-logout-target
+      source: '1700000093'
+      sourceHandle: case-logout
+      target: '1700000094'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000093-1700000020-false-target
+      source: '1700000093'
+      sourceHandle: 'false'
+      target: '1700000020'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000094-1700000095-source-target
+      source: '1700000094'
+      sourceHandle: source
+      target: '1700000095'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000091-1700000092-source-target
+      source: '1700000091'
+      sourceHandle: source
+      target: '1700000092'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000014-1700000015-source-target
+      source: '1700000014'
+      sourceHandle: source
+      target: '1700000015'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000012-1700000013-source-target
+      source: '1700000012'
+      sourceHandle: source
+      target: '1700000013'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000020-1700000021-source-target
+      source: '1700000020'
+      sourceHandle: source
+      target: '1700000021'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000021-1700000076-false-target
+      source: '1700000021'
+      sourceHandle: 'false'
+      target: '1700000076'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000021-1700000023-case-signed-target
+      source: '1700000021'
+      sourceHandle: case-signed
+      target: '1700000023'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000076-1700000077-source-target
+      source: '1700000076'
+      sourceHandle: source
+      target: '1700000077'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: human-input
+        isInIteration: false
+        isInLoop: false
+      id: 1700000077-1700000078-case-fresh-target
+      source: '1700000077'
+      sourceHandle: case-fresh
+      target: '1700000078'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000077-1700000084-false-target
+      source: '1700000077'
+      sourceHandle: 'false'
+      target: '1700000084'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: human-input
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000078-1700000079-done-target
+      source: '1700000078'
+      sourceHandle: done
+      target: '1700000079'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: human-input
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000078-1700000082-cancel-target
+      source: '1700000078'
+      sourceHandle: cancel
+      target: '1700000082'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: human-input
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000078-1700000083-__timeout-target
+      source: '1700000078'
+      sourceHandle: __timeout
+      target: '1700000083'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000079-1700000080-source-target
+      source: '1700000079'
+      sourceHandle: source
+      target: '1700000080'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000080-1700000081-case-login-signed-target
+      source: '1700000080'
+      sourceHandle: case-login-signed
+      target: '1700000081'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000080-1700000022-false-target
+      source: '1700000080'
+      sourceHandle: 'false'
+      target: '1700000022'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000084-1700000085-source-target
+      source: '1700000084'
+      sourceHandle: source
+      target: '1700000085'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000085-1700000081-case-quick-signed-target
+      source: '1700000085'
+      sourceHandle: case-quick-signed
+      target: '1700000081'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000085-1700000086-false-target
+      source: '1700000085'
+      sourceHandle: 'false'
+      target: '1700000086'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000023-1700000024-source-target
+      source: '1700000023'
+      sourceHandle: source
+      target: '1700000024'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000024-1700000100-source-target
+      source: '1700000024'
+      sourceHandle: source
+      target: '1700000100'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000100-1700000101-case-report-target
+      source: '1700000100'
+      sourceHandle: case-report
+      target: '1700000101'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000100-1700000025-false-target
+      source: '1700000100'
+      sourceHandle: 'false'
+      target: '1700000025'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000101-1700000102-source-target
+      source: '1700000101'
+      sourceHandle: source
+      target: '1700000102'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000102-1700000103-source-target
+      source: '1700000102'
+      sourceHandle: source
+      target: '1700000103'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: llm
+        isInIteration: false
+        isInLoop: false
+      id: 1700000103-1700000104-case-items-target
+      source: '1700000103'
+      sourceHandle: case-items
+      target: '1700000104'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000103-1700000107-false-target
+      source: '1700000103'
+      sourceHandle: 'false'
+      target: '1700000107'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000104-1700000105-source-target
+      source: '1700000104'
+      sourceHandle: source
+      target: '1700000105'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000105-1700000106-source-target
+      source: '1700000105'
+      sourceHandle: source
+      target: '1700000106'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000106-1700000107-source-target
+      source: '1700000106'
+      sourceHandle: source
+      target: '1700000107'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000107-1700000108-source-target
+      source: '1700000107'
+      sourceHandle: source
+      target: '1700000108'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000025-1700000026-case-paused-target
+      source: '1700000025'
+      sourceHandle: case-paused
+      target: '1700000026'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000025-1700000027-false-target
+      source: '1700000025'
+      sourceHandle: 'false'
+      target: '1700000027'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000027-1700000028-source-target
+      source: '1700000027'
+      sourceHandle: source
+      target: '1700000028'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000028-1700000029-false-target
+      source: '1700000028'
+      sourceHandle: 'false'
+      target: '1700000029'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000028-1700000030-case-locked-target
+      source: '1700000028'
+      sourceHandle: case-locked
+      target: '1700000030'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000030-1700000031-source-target
+      source: '1700000030'
+      sourceHandle: source
+      target: '1700000031'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000031-1700000032-false-target
+      source: '1700000031'
+      sourceHandle: 'false'
+      target: '1700000032'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000031-1700000034-case-ok-target
+      source: '1700000031'
+      sourceHandle: case-ok
+      target: '1700000034'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000032-1700000033-source-target
+      source: '1700000032'
+      sourceHandle: source
+      target: '1700000033'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000034-1700000035-source-target
+      source: '1700000034'
+      sourceHandle: source
+      target: '1700000035'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000035-1700000036-case-controls-target
+      source: '1700000035'
+      sourceHandle: case-controls
+      target: '1700000036'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000035-1700000048-false-target
+      source: '1700000035'
+      sourceHandle: 'false'
+      target: '1700000048'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000036-1700000037-source-target
+      source: '1700000036'
+      sourceHandle: source
+      target: '1700000037'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000037-1700000038-case-cmds-target
+      source: '1700000037'
+      sourceHandle: case-cmds
+      target: '1700000038'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000037-1700000044-false-target
+      source: '1700000037'
+      sourceHandle: 'false'
+      target: '1700000044'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000038-1700000039-source-target
+      source: '1700000038'
+      sourceHandle: source
+      target: '1700000039'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000039-1700000040-source-target
+      source: '1700000039'
+      sourceHandle: source
+      target: '1700000040'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: llm
+        isInIteration: false
+        isInLoop: false
+      id: 1700000040-1700000041-case-items-target
+      source: '1700000040'
+      sourceHandle: case-items
+      target: '1700000041'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000040-1700000044-false-target
+      source: '1700000040'
+      sourceHandle: 'false'
+      target: '1700000044'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000041-1700000042-source-target
+      source: '1700000041'
+      sourceHandle: source
+      target: '1700000042'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000042-1700000043-source-target
+      source: '1700000042'
+      sourceHandle: source
+      target: '1700000043'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000043-1700000061-source-target
+      source: '1700000043'
+      sourceHandle: source
+      target: '1700000061'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000061-1700000062-source-target
+      source: '1700000061'
+      sourceHandle: source
+      target: '1700000062'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000062-1700000047-source-target
+      source: '1700000062'
+      sourceHandle: source
+      target: '1700000047'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000044-1700000045-source-target
+      source: '1700000044'
+      sourceHandle: source
+      target: '1700000045'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000045-1700000046-source-target
+      source: '1700000045'
+      sourceHandle: source
+      target: '1700000046'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000046-1700000060-source-target
+      source: '1700000046'
+      sourceHandle: source
+      target: '1700000060'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: llm
+        isInIteration: false
+        isInLoop: false
+      id: 1700000048-1700000050-case-candidates-target
+      source: '1700000048'
+      sourceHandle: case-candidates
+      target: '1700000050'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000048-1700000044-false-target
+      source: '1700000048'
+      sourceHandle: 'false'
+      target: '1700000044'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: llm
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000050-1700000051-source-target
+      source: '1700000050'
+      sourceHandle: source
+      target: '1700000051'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000051-1700000052-source-target
+      source: '1700000051'
+      sourceHandle: source
+      target: '1700000052'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: if-else
+        isInIteration: false
+        isInLoop: false
+      id: 1700000052-1700000053-source-target
+      source: '1700000052'
+      sourceHandle: source
+      target: '1700000053'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000053-1700000054-false-target
+      source: '1700000053'
+      sourceHandle: 'false'
+      target: '1700000054'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: if-else
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000053-1700000056-case-ok-target
+      source: '1700000053'
+      sourceHandle: case-ok
+      target: '1700000056'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000054-1700000055-source-target
+      source: '1700000054'
+      sourceHandle: source
+      target: '1700000055'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000056-1700000057-source-target
+      source: '1700000056'
+      sourceHandle: source
+      target: '1700000057'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: tool
+        isInIteration: false
+        isInLoop: false
+      id: 1700000057-1700000058-source-target
+      source: '1700000057'
+      sourceHandle: source
+      target: '1700000058'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: tool
+        targetType: end
+        isInIteration: false
+        isInLoop: false
+      id: 1700000058-1700000059-source-target
+      source: '1700000058'
+      sourceHandle: source
+      target: '1700000059'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        sourceType: code
+        targetType: code
+        isInIteration: false
+        isInLoop: false
+      id: 1700000003-1700000006-source-target
+      source: '1700000003'
+      sourceHandle: source
+      target: '1700000006'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        type: trigger-schedule
+        title: Every 5 minutes
+        mode: cron
+        frequency: null
+        cron_expression: '*/5 * * * *'
+        visual_config: null
+        timezone: Asia/Hong_Kong
+        desc: ''
+        selected: false
+      height: 120
+      id: '1700000001'
+      position:
+        x: 40
+        y: 120
+      positionAbsolute:
+        x: 40
+        y: 120
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Read forced action
+        variables:
+        - variable: force_action
+          value_selector:
+          - env
+          - FORCE_ACTION
+        - variable: letters_value
+          value_selector:
+          - env
+          - LETTERS
+        - variable: days_value
+          value_selector:
+          - env
+          - SUMMARY_DAYS
+        code_language: python3
+        code: "def main(force_action, letters_value, days_value):\n    import json\n\n    action = str(force_action or \"\").strip().lower()\n    # Dify environment variables cannot be empty, so \"auto\" (or any unknown marker\n    # such as null/none) means \"normal scheduled run\".\n    if action in (\"\", \"auto\", \"none\", \"null\", \"-\"):\n        action = \"auto\"\n    letters = str(letters_value or \"sabc\").strip() or \"sabc\"\n    days = int(days_value or 0)\n    ctx = {\n        \"source\": \"schedule\",\n        \"action\": action,\n        \"letters\": letters,\n        \"days\": days,\n        \"manual\": action != \"auto\",\n        \"authorized\": True,\n    }\n    return {\"ctx_json\": json.dumps(ctx, ensure_ascii=False)}\n"
+        outputs:
+          ctx_json:
+            type: string
+        desc: ''
+        selected: false
+      height: 120
+      id: '1700000003'
+      position:
+        x: 340
+        y: 120
+      positionAbsolute:
+        x: 340
+        y: 120
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Parse context
+        variables:
+        - variable: ctx_json
+          value_selector:
+          - '1700000003'
+          - ctx_json
+        code_language: python3
+        code: "def main(ctx_json):\n    import json\n    ctx = {}\n    try:\n        ctx = json.loads(ctx_json or \"{}\")\n    except Exception:\n        ctx = {}\n    return {\n        \"source\": str(ctx.get(\"source\") or \"\"),\n        \"action\": str(ctx.get(\"action\") or \"auto\"),\n        \"letters\": str(ctx.get(\"letters\") or \"sabc\"),\n        \"days\": int(ctx.get(\"days\") or 0),\n        \"manual\": bool(ctx.get(\"manual\")),\n        \"authorized\": bool(ctx.get(\"authorized\")),\n    }\n"
+        outputs:
+          source:
+            type: string
+          action:
+            type: string
+          letters:
+            type: string
+          days:
+            type: number
+          manual:
+            type: boolean
+          authorized:
+            type: boolean
+        desc: ''
+        selected: false
+      height: 160
+      id: '1700000006'
+      position:
+        x: 900
+        y: 220
+      positionAbsolute:
+        x: 900
+        y: 220
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Authorized?
+        cases:
+        - case_id: case-authorized
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - authorized
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000007'
+      position:
+        x: 1160
+        y: 220
+      positionAbsolute:
+        x: 1160
+        y: 220
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000008'
+      position:
+        x: 1420
+        y: 120
+      positionAbsolute:
+        x: 1420
+        y: 120
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Manual summary?
+        cases:
+        - case_id: case-sum
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: sum
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000009'
+      position:
+        x: 1420
+        y: 300
+      positionAbsolute:
+        x: 1420
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Manual check?
+        cases:
+        - case_id: case-check
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: check
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000010'
+      position:
+        x: 1420
+        y: 480
+      positionAbsolute:
+        x: 1420
+        y: 480
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Resume?
+        cases:
+        - case_id: case-resume
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: resume
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000011'
+      position:
+        x: 1420
+        y: 660
+      positionAbsolute:
+        x: 1420
+        y: 660
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Reset baseline?
+        cases:
+        - case_id: case-reset
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: reset
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000090'
+      position:
+        x: 1420
+        y: 720
+      positionAbsolute:
+        x: 1420
+        y: 720
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Sign out?
+        cases:
+        - case_id: case-logout
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: logout
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000093'
+      position:
+        x: 1420
+        y: 780
+      positionAbsolute:
+        x: 1420
+        y: 780
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Check mailbox
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: check
+        tool_label: Check mailbox
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters: {}
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000012'
+      position:
+        x: 1680
+        y: 480
+      positionAbsolute:
+        x: 1680
+        y: 480
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: signed_in
+          value_type: boolean
+          value_selector:
+          - '1700000012'
+          - signed_in
+        - variable: account
+          value_type: string
+          value_selector:
+          - '1700000012'
+          - account
+        - variable: inbox_count
+          value_type: number
+          value_selector:
+          - '1700000012'
+          - inbox_count
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000013'
+      position:
+        x: 1960
+        y: 480
+      positionAbsolute:
+        x: 1960
+        y: 480
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Resume processing
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_set
+        tool_label: Resume processing
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          update_paused:
+            type: constant
+            value: true
+          paused:
+            type: constant
+            value: false
+          reason:
+            type: constant
+            value: manual resume
+          clear_failed:
+            type: constant
+            value: true
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000014'
+      position:
+        x: 1680
+        y: 660
+      positionAbsolute:
+        x: 1680
+        y: 660
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: paused
+          value_type: boolean
+          value_selector:
+          - '1700000014'
+          - paused
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000015'
+      position:
+        x: 1960
+        y: 660
+      positionAbsolute:
+        x: 1960
+        y: 660
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Reset test baseline
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_set
+        tool_label: Reset test baseline
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          reset_baseline:
+            type: constant
+            value: true
+          clear_failed:
+            type: constant
+            value: true
+          clear_ignored:
+            type: constant
+            value: true
+          reason:
+            type: constant
+            value: manual reset for testing
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000091'
+      position:
+        x: 1680
+        y: 720
+      positionAbsolute:
+        x: 1680
+        y: 720
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: paused_0092
+          value_type: boolean
+          value_selector:
+          - '1700000091'
+          - paused
+        - variable: last_seen_0092
+          value_type: string
+          value_selector:
+          - '1700000091'
+          - last_seen
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000092'
+      position:
+        x: 1960
+        y: 720
+      positionAbsolute:
+        x: 1960
+        y: 720
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Sign out
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: auth_sign_out
+        tool_label: Sign out
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters: {}
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000094'
+      position:
+        x: 1680
+        y: 780
+      positionAbsolute:
+        x: 1680
+        y: 780
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0095
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000095'
+      position:
+        x: 1960
+        y: 780
+      positionAbsolute:
+        x: 1960
+        y: 780
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Auth status
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: auth_status
+        tool_label: Auth status
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters: {}
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000020'
+      position:
+        x: 1680
+        y: 840
+      positionAbsolute:
+        x: 1680
+        y: 840
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Signed in?
+        cases:
+        - case_id: case-signed
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000020'
+            - signed_in
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000021'
+      position:
+        x: 1960
+        y: 840
+      positionAbsolute:
+        x: 1960
+        y: 840
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Get state
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_get
+        tool_label: Get state
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters: {}
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000023'
+      position:
+        x: 2220
+        y: 900
+      positionAbsolute:
+        x: 2220
+        y: 900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Parse state
+        variables:
+        - variable: state_json
+          value_selector:
+          - '1700000023'
+          - state
+        - variable: summary_days_value
+          value_selector:
+          - env
+          - SUMMARY_DAYS
+        - variable: force_action
+          value_selector:
+          - env
+          - FORCE_ACTION
+        code_language: python3
+        code: "def main(state_json, summary_days_value, force_action):\n    import json\n    from datetime import datetime, timedelta, timezone\n    try:\n        st = json.loads(state_json or \"{}\")\n    except Exception:\n        st = {}\n    try:\n        now = datetime.now(timezone(timedelta(hours=8)))\n        today = now.date()\n    except Exception:\n        now = None\n        today = None\n    catchup = True\n    if today is not None:\n        catchup = str(st.get(\"last_catchup_date\") or \"\") != today.isoformat()\n    summary_days = max(1, int(summary_days_value or 7))\n    # scheduled reports: any run between 00:00 and 00:09 local time.\n    # FORCE_ACTION=report_daily / report_weekly forces one immediately (testing).\n    forced = str(force_action or \"\").strip().lower()\n    report_kind = \"\"\n    if forced in (\"report_daily\", \"report_weekly\"):\n        report_kind = \"daily\" if forced == \"report_daily\" else \"weekly\"\n    elif now is not None and now.hour == 0\
+          \ and now.minute < 10:\n        weekly_due = (now.weekday() == 6\n                      and str(st.get(\"weekly_report_date\") or \"\") != today.isoformat())\n        daily_due = str(st.get(\"daily_report_date\") or \"\") != today.isoformat()\n        if weekly_due:\n            report_kind = \"weekly\"    # weekly wins on Sunday; includes the daily window\n        elif daily_due:\n            report_kind = \"daily\"\n    return {\n        \"paused\": bool(st.get(\"paused\")),\n        \"last_seen\": str(st.get(\"last_seen\") or \"\"),\n        \"failed_rounds\": int(st.get(\"failed_rounds\") or 0),\n        \"catchup\": bool(catchup),\n        \"catchup_date\": today.isoformat() if (catchup and today is not None) else \"\",\n        \"report_due\": bool(report_kind),\n        \"report_kind\": report_kind,\n        \"report_days\": summary_days if report_kind == \"weekly\" else 1,\n        \"report_letters\": \"sabc\",\n        \"mark_daily\": report_kind in (\"daily\", \"weekly\"\
+          ),\n        \"mark_weekly\": report_kind == \"weekly\",\n    }\n"
+        outputs:
+          paused:
+            type: boolean
+          last_seen:
+            type: string
+          failed_rounds:
+            type: number
+          catchup:
+            type: boolean
+          catchup_date:
+            type: string
+          report_due:
+            type: boolean
+          report_kind:
+            type: string
+          report_days:
+            type: number
+          report_letters:
+            type: string
+          mark_daily:
+            type: boolean
+          mark_weekly:
+            type: boolean
+        desc: ''
+        selected: false
+      height: 260
+      id: '1700000024'
+      position:
+        x: 2480
+        y: 900
+      positionAbsolute:
+        x: 2480
+        y: 900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Scheduled report?
+        cases:
+        - case_id: case-report
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000024'
+            - report_due
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000100'
+      position:
+        x: 2740
+        y: 700
+      positionAbsolute:
+        x: 2740
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Collect report mail
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: collect_recent
+        tool_label: Collect report mail
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          days:
+            type: variable
+            value:
+            - '1700000024'
+            - report_days
+          letters:
+            type: variable
+            value:
+            - '1700000024'
+            - report_letters
+          max_items:
+            type: constant
+            value: 50
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000101'
+      position:
+        x: 3000
+        y: 700
+      positionAbsolute:
+        x: 3000
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Report prompt
+        variables:
+        - variable: items
+          value_selector:
+          - '1700000101'
+          - items
+        - variable: language
+          value_selector:
+          - env
+          - LANGUAGE
+        code_language: python3
+        code: "def main(items, language):\n    import json\n\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n\n    items = as_list(items)\n    english = str(language or \"zh\").lower().startswith(\"en\")\n    blocks = []\n    for i, mail in enumerate(items, 1):\n        body = str(mail.get(\"body\") or \"\")[:800]\n        if english:\n            blocks.append(\"[%d] Subject: %s\\nFrom: %s\\nBody: %s\" % (i, mail.get(\"subject\"), mail.get(\"sender\"), body))\n        else:\n            blocks.append(\"[%d] 主题:%s\\n发件人:%s\\n正文:%s\" % (i, mail.get(\"subject\"), mail.get(\"sender\"), body))\n\n    if english:\n        prompt = (\"For each email below, write ONE short line saying what it is and what I need to do.\\n\"\n                  \"Rules: include deadline/date/course code/amount/venue/material\
+          \ when present; never mention the level or the sender; \"\n                  \"no filler; at most about 40 words per line.\\n\"\n                  \"Output ONE JSON object: {\\\"points\\\": [ ... ]} with exactly %d strings, same order as the emails.\\n\\n\" % len(items)\n                  + \"\\n\\n\".join(blocks))\n    else:\n        prompt = (\"给下面每封邮件写一句中文要点（说清：这封邮件是什么、要我做什么）。\\n\"\n                  \"要求：有截止时间/日期/课程代号/金额/地点/材料就写进去；不要写级别和发件人；不要写废话；每封一句，约 40 字。\\n\"\n                  \"只输出一个 JSON 对象：{\\\"points\\\": [...]}，按顺序每封一个字符串，数量必须正好 %d 个。\\n\\n\" % len(items)\n                  + \"\\n\\n\".join(blocks))\n    return {\"prompt\": prompt, \"item_count\": len(items), \"has_items\": bool(items)}\n"
+        outputs:
+          prompt:
+            type: string
+          item_count:
+            type: number
+          has_items:
+            type: boolean
+        desc: ''
+        selected: false
+      height: 180
+      id: '1700000102'
+      position:
+        x: 3260
+        y: 700
+      positionAbsolute:
+        x: 3260
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Report has mail?
+        cases:
+        - case_id: case-items
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000102'
+            - has_items
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000103'
+      position:
+        x: 3520
+        y: 700
+      positionAbsolute:
+        x: 3520
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: llm
+        title: Write one-liners
+        model: &id001
+          provider: openai
+          name: gpt-5.6-luna
+          mode: chat
+          completion_params:
+            temperature: 0
+            max_tokens: 4096
+        prompt_template:
+        - role: system
+          text: You are a careful email classification assistant. Follow the output format exactly.
+        - role: user
+          text: '{{#1700000102.prompt#}}'
+        prompt_config:
+          jinja2_variables: []
+        memory: null
+        context:
+          enabled: false
+          variable_selector: null
+        vision:
+          enabled: false
+        structured_output: null
+        structured_output_enabled: false
+        reasoning_format: separated
+        error_strategy: default-value
+        default_value:
+        - key: text
+          type: string
+          value: ''
+        retry_config:
+          max_retries: 2
+          retry_interval: 2000
+          retry_enabled: true
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000104'
+      position:
+        x: 3780
+        y: 700
+      positionAbsolute:
+        x: 3780
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Build HTML report
+        variables:
+        - variable: text
+          value_selector:
+          - '1700000104'
+          - text
+        - variable: items
+          value_selector:
+          - '1700000101'
+          - items
+        - variable: language
+          value_selector:
+          - env
+          - LANGUAGE
+        - variable: letters_value
+          value_selector:
+          - '1700000024'
+          - report_letters
+        - variable: days
+          value_selector:
+          - '1700000024'
+          - report_days
+        code_language: python3
+        code: "def main(text, items, language, letters_value, days):\n    import json\n    import re\n\n    LEVEL_COLORS = {\"S\": \"#e67e22\", \"A\": \"#8e44ad\", \"B\": \"#2980b9\", \"C\": \"#7f8c8d\"}\n\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n\n    def esc(text):\n        return (str(text or \"\").replace(\"&\", \"&amp;\").replace(\"<\", \"&lt;\").replace(\">\", \"&gt;\"))\n\n    def parse_points(raw):\n        raw = re.sub(r\"```(?:json)?\", \"\", raw or \"\").strip()\n        payload = None\n        try:\n            payload = json.loads(raw)\n        except Exception:\n            start, end = raw.find(\"[\"), raw.rfind(\"]\")\n            if start != -1 and end > start:\n                try:\n                    payload = json.loads(raw[start:end + 1])\n          \
+          \      except Exception:\n                    payload = None\n        if isinstance(payload, list):\n            return [str(x) for x in payload if isinstance(x, str)]\n        if isinstance(payload, dict):\n            for value in payload.values():\n                if isinstance(value, list) and value and all(isinstance(x, str) for x in value):\n                    return [str(x) for x in value]\n        return []\n\n    items = as_list(items)\n    points = parse_points(text)\n    english = str(language or \"zh\").lower().startswith(\"en\")\n    labels = {\"s\": \"S\", \"a\": \"A\", \"b\": \"B\", \"c\": \"C\"}\n    letters = \"\".join(c for c in \"sabc\" if c in str(letters_value or \"sabc\").lower()) or \"sabc\"\n    window = int(days or 7)\n    if letters == \"sabc\":\n        label_text = \"all levels\" if english else \"全部\"\n    else:\n        label_text = \"+\".join(labels[c] for c in letters) + (\" levels\" if english else \" 级\")\n    title = (\"\U0001F4EC Email summary（%s）\"\
+          \ if english else \"\U0001F4EC 邮件总结（%s）\") % label_text\n    subject = (\"\U0001F4EC Email summary (%s) · last %d days\" if english else \"\U0001F4EC 邮件总结（%s）· 最近%d天\") % (label_text, window)\n\n    html = [\"<html><body style=\\\"font-family:'Segoe UI','Microsoft YaHei',sans-serif;font-size:14px;color:#222;line-height:1.6;\\\">\",\n            \"<h2 style='margin:0 0 4px 0;'>%s</h2>\" % esc(title),\n            \"<p style='margin:0 0 8px 0;color:#888;'>%s</p>\" % ((\"%d messages\" if english else \"共 %d 封\") % len(items))]\n    current = None\n    for index, mail in enumerate(items):\n        level = str(mail.get(\"level\") or \"C\").upper()[:1]\n        if level != current:\n            if current is not None:\n                html.append(\"</div>\")\n            current = level\n            html.append(\"<h3 style='margin:22px 0 10px 0;color:%s;'>【%s】</h3>\" % (LEVEL_COLORS.get(level, \"#000\"), level))\n            html.append(\"<div>\")\n        line = [\"<div>[%s] <b>%s</b></div>\"\
+          \ % (level, esc(mail.get(\"sender\")))]\n        link = str(mail.get(\"web_link\") or \"\").strip()\n        if link:\n            line.append(\"<div><a href='%s'>%s</a></div>\" % (esc(link), esc(mail.get(\"subject\"))))\n        else:\n            line.append(\"<div>%s</div>\" % esc(mail.get(\"subject\")))\n        if index < len(points) and points[index]:\n            line.append(\"<div>%s</div>\" % esc(points[index]))\n        received = str(mail.get(\"received\") or \"\")\n        if received:\n            line.append(\"<div style='color:#999;font-size:12px;'>%s</div>\" % esc(received.replace(\"T\", \" \")))\n        html.append(\"<div style='margin:0 0 16px 0;padding-bottom:10px;border-bottom:1px solid #e6e6e6;'>\" + \"\".join(line) + \"</div>\")\n    if current is not None:\n        html.append(\"</div>\")\n    html.append(\"</body></html>\")\n\n    return {\"html\": \"\\n\".join(html), \"subject\": subject, \"points_count\": len(points)}\n"
+        outputs:
+          html:
+            type: string
+          subject:
+            type: string
+          points_count:
+            type: number
+        desc: ''
+        selected: false
+      height: 220
+      id: '1700000105'
+      position:
+        x: 4040
+        y: 700
+      positionAbsolute:
+        x: 4040
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Send report
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: send_report
+        tool_label: Send report
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          to:
+            type: mixed
+            value: '{{#env.RECIPIENT#}}'
+          subject:
+            type: variable
+            value:
+            - '1700000105'
+            - subject
+          html:
+            type: variable
+            value:
+            - '1700000105'
+            - html
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000106'
+      position:
+        x: 4300
+        y: 700
+      positionAbsolute:
+        x: 4300
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Mark report sent
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_set
+        tool_label: Mark report sent
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          mark_daily_report:
+            type: variable
+            value:
+            - '1700000024'
+            - mark_daily
+          mark_weekly_report:
+            type: variable
+            value:
+            - '1700000024'
+            - mark_weekly
+          reason:
+            type: constant
+            value: scheduled report
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000107'
+      position:
+        x: 4560
+        y: 700
+      positionAbsolute:
+        x: 4560
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0108
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000108'
+      position:
+        x: 4820
+        y: 700
+      positionAbsolute:
+        x: 4820
+        y: 700
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Paused?
+        cases:
+        - case_id: case-paused
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000024'
+            - paused
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000025'
+      position:
+        x: 2740
+        y: 900
+      positionAbsolute:
+        x: 2740
+        y: 900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0026
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000026'
+      position:
+        x: 3000
+        y: 800
+      positionAbsolute:
+        x: 3000
+        y: 800
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Acquire lock
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_lock
+        tool_label: Acquire lock
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          owner:
+            type: variable
+            value:
+            - sys
+            - workflow_run_id
+          ttl_seconds:
+            type: constant
+            value: 600
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000027'
+      position:
+        x: 3000
+        y: 960
+      positionAbsolute:
+        x: 3000
+        y: 960
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Lock acquired?
+        cases:
+        - case_id: case-locked
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000027'
+            - acquired
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000028'
+      position:
+        x: 3260
+        y: 960
+      positionAbsolute:
+        x: 3260
+        y: 960
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0029
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000029'
+      position:
+        x: 3520
+        y: 860
+      positionAbsolute:
+        x: 3520
+        y: 860
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Collect mail
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: collect
+        tool_label: Collect mail
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          last_seen:
+            type: variable
+            value:
+            - '1700000024'
+            - last_seen
+          days:
+            type: constant
+            value: 7
+          max_items:
+            type: constant
+            value: 20
+          catchup:
+            type: variable
+            value:
+            - '1700000024'
+            - catchup
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000030'
+      position:
+        x: 3520
+        y: 1020
+      positionAbsolute:
+        x: 3520
+        y: 1020
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Mailbox available?
+        cases:
+        - case_id: case-ok
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000030'
+            - transient
+            comparison_operator: is
+            value: 'false'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000031'
+      position:
+        x: 3780
+        y: 1020
+      positionAbsolute:
+        x: 3780
+        y: 1020
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Release lock
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_unlock
+        tool_label: Release lock
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          owner:
+            type: variable
+            value:
+            - sys
+            - workflow_run_id
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000032'
+      position:
+        x: 4040
+        y: 900
+      positionAbsolute:
+        x: 4040
+        y: 900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0033
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000033'
+      position:
+        x: 4300
+        y: 900
+      positionAbsolute:
+        x: 4300
+        y: 900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Plan round
+        variables:
+        - variable: candidates
+          value_selector:
+          - '1700000030'
+          - candidates
+        - variable: controls_commands
+          value_selector:
+          - '1700000030'
+          - controls_commands
+        - variable: controls_reports
+          value_selector:
+          - '1700000030'
+          - controls_reports
+        - variable: newest_id
+          value_selector:
+          - '1700000030'
+          - newest_id
+        - variable: catchup_date
+          value_selector:
+          - '1700000024'
+          - catchup_date
+        - variable: name
+          value_selector:
+          - env
+          - NAME
+        - variable: student_id
+          value_selector:
+          - env
+          - STUDENT_ID
+        - variable: school_domains
+          value_selector:
+          - env
+          - SCHOOL_DOMAINS
+        - variable: faculty
+          value_selector:
+          - env
+          - FACULTY
+        - variable: courses
+          value_selector:
+          - env
+          - COURSES
+        - variable: urgent_days
+          value_selector:
+          - env
+          - URGENT_DAYS
+        - variable: language
+          value_selector:
+          - env
+          - LANGUAGE
+        - variable: dry_run_value
+          value_selector:
+          - env
+          - DRY_RUN
+        code_language: python3
+        code: "def main(candidates, controls_commands, controls_reports, newest_id, catchup_date, name, student_id, school_domains, faculty, courses, urgent_days, language, dry_run_value):\n    import json\n    from datetime import datetime, timedelta, timezone\n\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n\n    def split_terms(text):\n        out = []\n        for sep in (\";\", \"；\", \"、\", \"\\n\", \"|\"):\n            text = str(text or \"\").replace(sep, \",\")\n        for piece in text.split(\",\"):\n            piece = piece.strip()\n            if piece and piece.lower() not in [x.lower() for x in out]:\n                out.append(piece)\n        return out\n\n    candidates = as_list(candidates)\n    commands = as_list(controls_commands)\n    reports = as_list(controls_reports)\n\
+          \    names = split_terms(name)\n    student_id = str(student_id or \"\").strip()\n    faculty = split_terms(faculty)\n    courses = split_terms(courses)\n    domains = split_terms(school_domains)\n    urgent_days = int(urgent_days or 14)\n    english = str(language or \"zh\").lower().startswith(\"en\")\n\n    na = \"(not set)\" if english else \"（未填写）\"\n    rules = []\n    rules.append(\"第一步 · 判断这封是不是学校事务邮件（学校/学院/教务/课程/宿舍/图书馆/校方活动，\"\n                 \"以及学校采购的外部平台代发，如 Canvas、问卷、报名系统）。私人邮件、商家推广、与学校无关的订阅不算。\"\n                 \"发件域名命中 \" + (\"、\".join(domains) or na) + \" 的一律算学校邮件。\")\n    rules.append(\"第二步 · 学校邮件判 S/A/B/C（先判 S）：\")\n    rules.append(\"- S：需要我做事且有 %d 天内的截止日期（作业/表格/报名/缴费/考试）；活动举办日期不算截止；已过期且无需补的按后续判。\" % urgent_days)\n    rules.append(\"- A：我参与的课程（%s）、我所在学院/系（%s）、宿舍相关、点名到我（%s / 学号 %s）、\"\n                 \"与学业直接相关的官方事务（选课/考试/成绩/报名/缴费/表格/毕业/交换/图书馆）。\" % (\n                     \"、\".join(courses) or na, \"、\".join(faculty) or na,\n                     \"、\".join(names)\
+          \ or na, student_id or na))\n    rules.append(\"- B：需要我报名/申请/提交，但不紧急（招聘会/Co-op/工作坊/比赛/交流/科研机会/申研）。\")\n    rules.append(\"- C：通知型内容，我不需要做任何事（讲座通知、新闻、活动宣传、开放时间、已过期通知）。\")\n    rules.append(\"判断 B 还是 C 只看：要不要我报名/申请/提交。要 → B；只是告诉我 → C。\")\n    rule_text = \"\\n\".join(rules)\n\n    blocks = []\n    ids = []\n    for i, mail in enumerate(candidates, 1):\n        ids.append(str(mail.get(\"entryid\") or \"\"))\n        sender = (str(mail.get(\"sender_name\") or \"\").strip() + \" <\" + str(mail.get(\"sender\") or \"\") + \">\").strip()\n        blocks.append(\"[%d] 主题: %s\\n发件人: %s\\n正文: %s\" % (\n            i, mail.get(\"subject\") or \"\", sender or \"(未知发件人)\", mail.get(\"body_head\") or \"(无正文)\"))\n\n    prompt = \"\"\n    if candidates:\n        prompt = (\n            \"按规则逐封处理，不要写摘要或解释。\\n\\n\" + rule_text +\n            \"\\n\\n处理下面 %d 封邮件，只输出一个 JSON 对象：\"\n            \"\\n{\\\"items\\\": [{\\\"ref\\\": 1, \\\"级别\\\": \\\"S|A|B|C\\\", \\\"截止日期\\\": \\\"YYYY-MM-DD 或 null\\\"\
+          , \\\"学校\\\": true}]}\"\n            \"\\n要求：items 数量必须正好 %d 个；ref 必须是下面每封邮件开头的方括号编号（1 到 %d，每封恰好一次）；\"\n            \"不要抄写邮件 id，不要输出 entryid 字段。\\n\\n\" % (\n                len(candidates), len(candidates), len(candidates)) +\n            \"每封邮件格式：[编号] 主题/发件人/正文\\n\\n\" + \"\\n\\n\".join(blocks)\n        )\n\n    control_ids = []\n    for item in commands + reports:\n        eid = str(item.get(\"entryid\") or \"\")\n        if eid:\n            control_ids.append(eid)\n\n    dry_run = str(dry_run_value or \"\").strip().lower() in (\"1\", \"true\", \"yes\", \"on\", \"是\")\n\n    today = datetime.now(timezone(timedelta(hours=8))).date()\n    return {\n        \"prompt\": prompt,\n        \"ids_json\": json.dumps(ids, ensure_ascii=False),\n        \"candidate_count\": len(candidates),\n        \"has_candidates\": bool(candidates),\n        \"has_commands\": bool(commands),\n        \"has_controls\": bool(commands or reports),\n        \"control_ids_json\": json.dumps(control_ids,\
+          \ ensure_ascii=False),\n        \"newest_id\": str(newest_id or \"\"),\n        \"catchup_date\": str(catchup_date or \"\"),\n        \"dry_run\": dry_run,\n    }\n"
+        outputs:
+          prompt:
+            type: string
+          ids_json:
+            type: string
+          candidate_count:
+            type: number
+          has_candidates:
+            type: boolean
+          has_commands:
+            type: boolean
+          has_controls:
+            type: boolean
+          control_ids_json:
+            type: string
+          newest_id:
+            type: string
+          catchup_date:
+            type: string
+          dry_run:
+            type: boolean
+        desc: ''
+        selected: false
+      height: 260
+      id: '1700000034'
+      position:
+        x: 4040
+        y: 1080
+      positionAbsolute:
+        x: 4040
+        y: 1080
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Control mail?
+        cases:
+        - case_id: case-controls
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000034'
+            - has_controls
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000035'
+      position:
+        x: 4340
+        y: 1080
+      positionAbsolute:
+        x: 4340
+        y: 1080
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Tag control mail
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: tag
+        tool_label: Tag control mail
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          entryids_json:
+            type: variable
+            value:
+            - '1700000034'
+            - control_ids_json
+          names_json:
+            type: constant
+            value: '["Sum"]'
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000036'
+      position:
+        x: 4600
+        y: 1000
+      positionAbsolute:
+        x: 4600
+        y: 1000
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Sum command?
+        cases:
+        - case_id: case-cmds
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000034'
+            - has_commands
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000037'
+      position:
+        x: 4600
+        y: 1180
+      positionAbsolute:
+        x: 4600
+        y: 1180
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Collect classified mail
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: collect_recent
+        tool_label: Collect classified mail
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          days:
+            type: variable
+            value:
+            - env
+            - SUMMARY_DAYS
+          letters:
+            type: variable
+            value:
+            - '1700000006'
+            - letters
+          max_items:
+            type: constant
+            value: 50
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000038'
+      position:
+        x: 4860
+        y: 1100
+      positionAbsolute:
+        x: 4860
+        y: 1100
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Report prompt
+        variables:
+        - variable: items
+          value_selector:
+          - '1700000038'
+          - items
+        - variable: language
+          value_selector:
+          - env
+          - LANGUAGE
+        code_language: python3
+        code: "def main(items, language):\n    import json\n\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n\n    items = as_list(items)\n    english = str(language or \"zh\").lower().startswith(\"en\")\n    blocks = []\n    for i, mail in enumerate(items, 1):\n        body = str(mail.get(\"body\") or \"\")[:800]\n        if english:\n            blocks.append(\"[%d] Subject: %s\\nFrom: %s\\nBody: %s\" % (i, mail.get(\"subject\"), mail.get(\"sender\"), body))\n        else:\n            blocks.append(\"[%d] 主题:%s\\n发件人:%s\\n正文:%s\" % (i, mail.get(\"subject\"), mail.get(\"sender\"), body))\n\n    if english:\n        prompt = (\"For each email below, write ONE short line saying what it is and what I need to do.\\n\"\n                  \"Rules: include deadline/date/course code/amount/venue/material\
+          \ when present; never mention the level or the sender; \"\n                  \"no filler; at most about 40 words per line.\\n\"\n                  \"Output ONE JSON object: {\\\"points\\\": [ ... ]} with exactly %d strings, same order as the emails.\\n\\n\" % len(items)\n                  + \"\\n\\n\".join(blocks))\n    else:\n        prompt = (\"给下面每封邮件写一句中文要点（说清：这封邮件是什么、要我做什么）。\\n\"\n                  \"要求：有截止时间/日期/课程代号/金额/地点/材料就写进去；不要写级别和发件人；不要写废话；每封一句，约 40 字。\\n\"\n                  \"只输出一个 JSON 对象：{\\\"points\\\": [...]}，按顺序每封一个字符串，数量必须正好 %d 个。\\n\\n\" % len(items)\n                  + \"\\n\\n\".join(blocks))\n    return {\"prompt\": prompt, \"item_count\": len(items), \"has_items\": bool(items)}\n"
+        outputs:
+          prompt:
+            type: string
+          item_count:
+            type: number
+          has_items:
+            type: boolean
+        desc: ''
+        selected: false
+      height: 180
+      id: '1700000039'
+      position:
+        x: 4860
+        y: 1300
+      positionAbsolute:
+        x: 4860
+        y: 1300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Anything to report?
+        cases:
+        - case_id: case-items
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000039'
+            - has_items
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000040'
+      position:
+        x: 5120
+        y: 1300
+      positionAbsolute:
+        x: 5120
+        y: 1300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: llm
+        title: Write one-liners
+        model: *id001
+        prompt_template:
+        - role: system
+          text: You are a careful email classification assistant. Follow the output format exactly.
+        - role: user
+          text: '{{#1700000039.prompt#}}'
+        prompt_config:
+          jinja2_variables: []
+        memory: null
+        context:
+          enabled: false
+          variable_selector: null
+        vision:
+          enabled: false
+        structured_output: null
+        structured_output_enabled: false
+        reasoning_format: separated
+        error_strategy: default-value
+        default_value:
+        - key: text
+          type: string
+          value: ''
+        retry_config:
+          max_retries: 2
+          retry_interval: 2000
+          retry_enabled: true
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000041'
+      position:
+        x: 5380
+        y: 1300
+      positionAbsolute:
+        x: 5380
+        y: 1300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Build HTML report
+        variables:
+        - variable: text
+          value_selector:
+          - '1700000041'
+          - text
+        - variable: items
+          value_selector:
+          - '1700000038'
+          - items
+        - variable: language
+          value_selector:
+          - env
+          - LANGUAGE
+        - variable: letters_value
+          value_selector:
+          - env
+          - LETTERS
+        - variable: days
+          value_selector:
+          - env
+          - SUMMARY_DAYS
+        code_language: python3
+        code: "def main(text, items, language, letters_value, days):\n    import json\n    import re\n\n    LEVEL_COLORS = {\"S\": \"#e67e22\", \"A\": \"#8e44ad\", \"B\": \"#2980b9\", \"C\": \"#7f8c8d\"}\n\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n\n    def esc(text):\n        return (str(text or \"\").replace(\"&\", \"&amp;\").replace(\"<\", \"&lt;\").replace(\">\", \"&gt;\"))\n\n    def parse_points(raw):\n        raw = re.sub(r\"```(?:json)?\", \"\", raw or \"\").strip()\n        payload = None\n        try:\n            payload = json.loads(raw)\n        except Exception:\n            start, end = raw.find(\"[\"), raw.rfind(\"]\")\n            if start != -1 and end > start:\n                try:\n                    payload = json.loads(raw[start:end + 1])\n          \
+          \      except Exception:\n                    payload = None\n        if isinstance(payload, list):\n            return [str(x) for x in payload if isinstance(x, str)]\n        if isinstance(payload, dict):\n            for value in payload.values():\n                if isinstance(value, list) and value and all(isinstance(x, str) for x in value):\n                    return [str(x) for x in value]\n        return []\n\n    items = as_list(items)\n    points = parse_points(text)\n    english = str(language or \"zh\").lower().startswith(\"en\")\n    labels = {\"s\": \"S\", \"a\": \"A\", \"b\": \"B\", \"c\": \"C\"}\n    letters = \"\".join(c for c in \"sabc\" if c in str(letters_value or \"sabc\").lower()) or \"sabc\"\n    window = int(days or 7)\n    if letters == \"sabc\":\n        label_text = \"all levels\" if english else \"全部\"\n    else:\n        label_text = \"+\".join(labels[c] for c in letters) + (\" levels\" if english else \" 级\")\n    title = (\"\U0001F4EC Email summary（%s）\"\
+          \ if english else \"\U0001F4EC 邮件总结（%s）\") % label_text\n    subject = (\"\U0001F4EC Email summary (%s) · last %d days\" if english else \"\U0001F4EC 邮件总结（%s）· 最近%d天\") % (label_text, window)\n\n    html = [\"<html><body style=\\\"font-family:'Segoe UI','Microsoft YaHei',sans-serif;font-size:14px;color:#222;line-height:1.6;\\\">\",\n            \"<h2 style='margin:0 0 4px 0;'>%s</h2>\" % esc(title),\n            \"<p style='margin:0 0 8px 0;color:#888;'>%s</p>\" % ((\"%d messages\" if english else \"共 %d 封\") % len(items))]\n    current = None\n    for index, mail in enumerate(items):\n        level = str(mail.get(\"level\") or \"C\").upper()[:1]\n        if level != current:\n            if current is not None:\n                html.append(\"</div>\")\n            current = level\n            html.append(\"<h3 style='margin:22px 0 10px 0;color:%s;'>【%s】</h3>\" % (LEVEL_COLORS.get(level, \"#000\"), level))\n            html.append(\"<div>\")\n        line = [\"<div>[%s] <b>%s</b></div>\"\
+          \ % (level, esc(mail.get(\"sender\")))]\n        link = str(mail.get(\"web_link\") or \"\").strip()\n        if link:\n            line.append(\"<div><a href='%s'>%s</a></div>\" % (esc(link), esc(mail.get(\"subject\"))))\n        else:\n            line.append(\"<div>%s</div>\" % esc(mail.get(\"subject\")))\n        if index < len(points) and points[index]:\n            line.append(\"<div>%s</div>\" % esc(points[index]))\n        received = str(mail.get(\"received\") or \"\")\n        if received:\n            line.append(\"<div style='color:#999;font-size:12px;'>%s</div>\" % esc(received.replace(\"T\", \" \")))\n        html.append(\"<div style='margin:0 0 16px 0;padding-bottom:10px;border-bottom:1px solid #e6e6e6;'>\" + \"\".join(line) + \"</div>\")\n    if current is not None:\n        html.append(\"</div>\")\n    html.append(\"</body></html>\")\n\n    return {\"html\": \"\\n\".join(html), \"subject\": subject, \"points_count\": len(points)}\n"
+        outputs:
+          html:
+            type: string
+          subject:
+            type: string
+          points_count:
+            type: number
+        desc: ''
+        selected: false
+      height: 260
+      id: '1700000042'
+      position:
+        x: 5640
+        y: 1300
+      positionAbsolute:
+        x: 5640
+        y: 1300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Send report
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: send_report
+        tool_label: Send report
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          to:
+            type: mixed
+            value: '{{#env.RECIPIENT#}}'
+          subject:
+            type: variable
+            value:
+            - '1700000042'
+            - subject
+          html:
+            type: variable
+            value:
+            - '1700000042'
+            - html
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000043'
+      position:
+        x: 5900
+        y: 1300
+      positionAbsolute:
+        x: 5900
+        y: 1300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Control round result
+        variables:
+        - variable: newest_id
+          value_selector:
+          - '1700000034'
+          - newest_id
+        - variable: catchup_date
+          value_selector:
+          - '1700000034'
+          - catchup_date
+        code_language: python3
+        code: "def main(newest_id, catchup_date):\n    import json\n    return {\n        \"pending_ids_json\": \"[]\",\n        \"failed\": 0,\n        \"ignored_json\": \"[]\",\n        \"newest_id\": str(newest_id or \"\"),\n        \"catchup\": False,\n        \"catchup_date\": str(catchup_date or \"\"),\n    }\n"
+        outputs:
+          pending_ids_json:
+            type: string
+          failed:
+            type: number
+          ignored_json:
+            type: string
+          newest_id:
+            type: string
+          catchup:
+            type: boolean
+          catchup_date:
+            type: string
+        desc: ''
+        selected: false
+      height: 180
+      id: '1700000044'
+      position:
+        x: 6160
+        y: 1100
+      positionAbsolute:
+        x: 6160
+        y: 1100
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Advance baseline
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_advance
+        tool_label: Advance baseline
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          pending_ids_json:
+            type: variable
+            value:
+            - '1700000044'
+            - pending_ids_json
+          newest_id:
+            type: variable
+            value:
+            - '1700000044'
+            - newest_id
+          failed:
+            type: variable
+            value:
+            - '1700000044'
+            - failed
+          ignored_ids_json:
+            type: variable
+            value:
+            - '1700000044'
+            - ignored_json
+          catchup:
+            type: variable
+            value:
+            - '1700000044'
+            - catchup
+          catchup_date:
+            type: variable
+            value:
+            - '1700000044'
+            - catchup_date
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000045'
+      position:
+        x: 6420
+        y: 1100
+      positionAbsolute:
+        x: 6420
+        y: 1100
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Release lock
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_unlock
+        tool_label: Release lock
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          owner:
+            type: variable
+            value:
+            - sys
+            - workflow_run_id
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000046'
+      position:
+        x: 6680
+        y: 1100
+      positionAbsolute:
+        x: 6680
+        y: 1100
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0060
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000060'
+      position:
+        x: 6940
+        y: 1040
+      positionAbsolute:
+        x: 6940
+        y: 1040
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Advance after report
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_advance
+        tool_label: Advance after report
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          pending_ids_json:
+            type: constant
+            value: '[]'
+          newest_id:
+            type: variable
+            value:
+            - '1700000034'
+            - newest_id
+          failed:
+            type: constant
+            value: 0
+          ignored_ids_json:
+            type: constant
+            value: '[]'
+          catchup:
+            type: constant
+            value: false
+          catchup_date:
+            type: constant
+            value: ''
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000061'
+      position:
+        x: 6160
+        y: 1520
+      positionAbsolute:
+        x: 6160
+        y: 1520
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Release lock
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_unlock
+        tool_label: Release lock
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          owner:
+            type: variable
+            value:
+            - sys
+            - workflow_run_id
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000062'
+      position:
+        x: 6420
+        y: 1520
+      positionAbsolute:
+        x: 6420
+        y: 1520
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: subject
+          value_type: string
+          value_selector:
+          - '1700000042'
+          - subject
+        - variable: points
+          value_type: number
+          value_selector:
+          - '1700000042'
+          - points_count
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000047'
+      position:
+        x: 6680
+        y: 1520
+      positionAbsolute:
+        x: 6680
+        y: 1520
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: New mail?
+        cases:
+        - case_id: case-candidates
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000034'
+            - has_candidates
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000048'
+      position:
+        x: 4600
+        y: 1360
+      positionAbsolute:
+        x: 4600
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: llm
+        title: Classify mail
+        model: *id001
+        prompt_template:
+        - role: system
+          text: You are a careful email classification assistant. Follow the output format exactly.
+        - role: user
+          text: '{{#1700000034.prompt#}}'
+        prompt_config:
+          jinja2_variables: []
+        memory: null
+        context:
+          enabled: false
+          variable_selector: null
+        vision:
+          enabled: false
+        structured_output: null
+        structured_output_enabled: false
+        reasoning_format: separated
+        error_strategy: default-value
+        default_value:
+        - key: text
+          type: string
+          value: ''
+        retry_config:
+          max_retries: 2
+          retry_interval: 2000
+          retry_enabled: true
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000050'
+      position:
+        x: 4860
+        y: 1360
+      positionAbsolute:
+        x: 4860
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Validate verdicts
+        variables:
+        - variable: text
+          value_selector:
+          - '1700000050'
+          - text
+        - variable: candidates_value
+          value_selector:
+          - '1700000030'
+          - candidates
+        - variable: ids_json
+          value_selector:
+          - '1700000034'
+          - ids_json
+        - variable: school_domains_value
+          value_selector:
+          - env
+          - SCHOOL_DOMAINS
+        - variable: faculty_value
+          value_selector:
+          - env
+          - FACULTY
+        - variable: courses_value
+          value_selector:
+          - env
+          - COURSES
+        - variable: urgent_days_value
+          value_selector:
+          - env
+          - URGENT_DAYS
+        code_language: python3
+        code: "def main(text, candidates_value, ids_json, school_domains_value, faculty_value, courses_value, urgent_days_value):\n    import json\n    import re\n    from datetime import datetime, timedelta, timezone\n\n    LEVELS = (\"S\", \"A\", \"B\", \"C\")\n\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n\n    def split_terms(text):\n        out = []\n        for sep in (\";\", \"；\", \"、\", \"\\n\", \"|\"):\n            text = str(text or \"\").replace(sep, \",\")\n        for piece in text.split(\",\"):\n            piece = piece.strip()\n            if piece and piece.lower() not in [x.lower() for x in out]:\n                out.append(piece)\n        return out\n\n    def strip_fences(text):\n        text = re.sub(r\"```(?:json)?\", \"\", text or \"\")\n        return\
+          \ text.strip()\n\n    def parse_json(text):\n        cleaned = strip_fences(text)\n        if not cleaned:\n            return None\n        try:\n            return json.loads(cleaned)\n        except Exception:\n            pass\n        for opener, closer in ((\"[\", \"]\"), (\"{\", \"}\")):\n            start, end = cleaned.find(opener), cleaned.rfind(closer)\n            if start == -1 or end <= start:\n                continue\n            try:\n                return json.loads(cleaned[start:end + 1])\n            except Exception:\n                continue\n        return None\n\n    def item_list(payload):\n        if isinstance(payload, list):\n            return payload\n        if isinstance(payload, dict):\n            for key in (\"items\", \"results\", \"data\", \"mails\", \"邮件\"):\n                if isinstance(payload.get(key), list):\n                    return payload[key]\n            lists = [v for v in payload.values() if isinstance(v, list)]\n           \
+          \ if len(lists) == 1:\n                return lists[0]\n        return None\n\n    def pick(item, keys):\n        for key in keys:\n            if isinstance(item, dict) and key in item and item[key] not in (None, \"\"):\n                return item[key]\n        return None\n\n    def parse_school(value):\n        if isinstance(value, bool):\n            return value\n        if isinstance(value, (int, float)):\n            return bool(value)\n        text = str(value or \"\").strip().lower()\n        if not text:\n            return None\n        if text in (\"true\", \"1\", \"yes\", \"y\", \"是\", \"对\", \"学校\", \"school\"):\n            return True\n        if text in (\"false\", \"0\", \"no\", \"n\", \"否\", \"不是\", \"非学校\", \"not_school\"):\n            return False\n        if text.startswith((\"不是\", \"不属于\", \"不算\", \"否\", \"非学校\", \"not\", \"no\")):\n            return False\n        if text.startswith((\"是\", \"属于\", \"算\", \"yes\")):\n            return True\n       \
+          \ return None\n\n    def parse_deadline(value):\n        text = str(value or \"\").strip()\n        if not text:\n            return None\n        try:\n            return datetime.strptime(text[:10], \"%Y-%m-%d\").date()\n        except ValueError:\n            return None\n\n    def is_school_address(address, domains):\n        text = str(address or \"\").strip().lower()\n        if \"@\" not in text:\n            return False\n        domain = text.rsplit(\"@\", 1)[1].strip().strip(\">\").strip().rstrip(\".\")\n        for suffix in domains:\n            s = str(suffix).strip().lower().lstrip(\"@\").strip(\".\")\n            if s and (domain == s or domain.endswith(\".\" + s)):\n                return True\n        return False\n\n    candidates = as_list(candidates_value)\n    ids = as_list(ids_json)\n    payload = parse_json(text)\n    items = item_list(payload) if payload is not None else None\n    verdicts = []\n    failed = 0\n    if items is None or len(items) != len(ids):\n\
+          \        failed = len(candidates)\n    else:\n        by_id = {}\n        bad = False\n        for position, item in enumerate(items):\n            if not isinstance(item, dict):\n                bad = True\n                break\n            # preferred alignment: the short ref/index printed in the prompt\n            ref = item.get(\"ref\")\n            if ref is None:\n                ref = item.get(\"index\")\n            entryid = str(item.get(\"entryid\") or item.get(\"id\") or \"\").strip()\n            target = \"\"\n            if isinstance(ref, int) and 1 <= ref <= len(ids):\n                target = ids[ref - 1]\n            elif isinstance(ref, str) and ref.strip().isdigit() and 1 <= int(ref) <= len(ids):\n                target = ids[int(ref) - 1]\n            if not target and entryid:\n                if entryid in ids:\n                    target = entryid\n                elif entryid.isdigit() and 1 <= int(entryid) <= len(ids):\n                    # the model\
+          \ copied the bracketed ref into entryid\n                    target = ids[int(entryid) - 1]\n            if not target and position < len(ids):\n                # last resort: same item count -> assume the model kept the order\n                target = ids[position]\n            if not target or target in by_id:\n                bad = True\n                break\n            by_id[target] = item\n        if bad or set(by_id) != set(ids):\n            failed = len(candidates)\n        else:\n            urgent_days = int(urgent_days_value or 14)\n            today = datetime.now(timezone(timedelta(hours=8))).date()\n            domains = split_terms(school_domains_value)\n            faculty = split_terms(faculty_value)\n            courses = split_terms(courses_value)\n            enrolled = None\n            if courses:\n                enrolled = re.compile(r\"(?<![A-Za-z0-9])(\" + \"|\".join(re.escape(c) for c in courses) + r\")(?![A-Za-z0-9])\", re.IGNORECASE)\n           \
+          \ for mail in candidates:\n                entryid = str(mail.get(\"entryid\") or \"\")\n                item = by_id.get(entryid, {})\n                level = str(pick(item, (\"级别\", \"level\")) or \"\").strip().upper()[:1]\n                if level not in LEVELS:\n                    level = \"C\"\n                deadline = parse_deadline(pick(item, (\"截止日期\", \"deadline\", \"due\")))\n                school = parse_school(pick(item, (\"学校\", \"school\", \"is_school\")))\n                is_school = True if school is None else school\n                if not is_school and is_school_address(mail.get(\"sender\"), domains):\n                    is_school = True\n                # deterministic overrides: only raise, never lower\n                if is_school:\n                    haystack = (str(mail.get(\"subject\") or \"\") + \"\\n\" + str(mail.get(\"body_head\") or \"\"))\n                    if enrolled is not None and enrolled.search(haystack) and LEVELS.index(level) > LEVELS.index(\"\
+          A\"):\n                        level = \"A\"\n                    lowered = \"\\n\".join(str(mail.get(k) or \"\") for k in (\"sender_name\", \"sender\", \"subject\", \"body_head\")).lower()\n                    if faculty and LEVELS.index(level) > LEVELS.index(\"A\") and any(term.lower() in lowered for term in faculty):\n                        level = \"A\"\n                urgent = False\n                if level == \"S\" and deadline is not None:\n                    delta = (deadline - today).days\n                    urgent = 0 <= delta <= urgent_days\n                verdicts.append({\n                    \"entryid\": entryid,\n                    \"level\": level,\n                    \"urgent\": urgent,\n                    \"is_school\": is_school,\n                    \"categories\": mail.get(\"categories\") if isinstance(mail.get(\"categories\"), list) else [],\n                })\n    return {\n        \"verdicts_json\": json.dumps(verdicts, ensure_ascii=False),\n \
+          \       \"pending_ids_json\": json.dumps(ids, ensure_ascii=False),\n        \"failed\": failed,\n        \"summary\": \"parsed %d/%d\" % (len(verdicts), len(candidates)),\n    }\n"
+        outputs:
+          verdicts_json:
+            type: string
+          pending_ids_json:
+            type: string
+          failed:
+            type: number
+          summary:
+            type: string
+        desc: ''
+        selected: false
+      height: 260
+      id: '1700000051'
+      position:
+        x: 5120
+        y: 1360
+      positionAbsolute:
+        x: 5120
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Write back
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: apply
+        tool_label: Write back
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          verdicts_json:
+            type: variable
+            value:
+            - '1700000051'
+            - verdicts_json
+          dry_run:
+            type: variable
+            value:
+            - '1700000034'
+            - dry_run
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000052'
+      position:
+        x: 5380
+        y: 1360
+      positionAbsolute:
+        x: 5380
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Write ok?
+        cases:
+        - case_id: case-ok
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000052'
+            - transient
+            comparison_operator: is
+            value: 'false'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000053'
+      position:
+        x: 5640
+        y: 1360
+      positionAbsolute:
+        x: 5640
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Release lock
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_unlock
+        tool_label: Release lock
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          owner:
+            type: variable
+            value:
+            - sys
+            - workflow_run_id
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000054'
+      position:
+        x: 5900
+        y: 1240
+      positionAbsolute:
+        x: 5900
+        y: 1240
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0055
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000055'
+      position:
+        x: 6160
+        y: 1240
+      positionAbsolute:
+        x: 6160
+        y: 1240
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: code
+        title: Round result
+        variables:
+        - variable: pending_ids_json
+          value_selector:
+          - '1700000051'
+          - pending_ids_json
+        - variable: failed
+          value_selector:
+          - '1700000052'
+          - failed
+        - variable: ignored_ids
+          value_selector:
+          - '1700000052'
+          - ignored_ids
+        - variable: newest_id
+          value_selector:
+          - '1700000034'
+          - newest_id
+        - variable: catchup
+          value_selector:
+          - '1700000024'
+          - catchup
+        - variable: catchup_date
+          value_selector:
+          - '1700000034'
+          - catchup_date
+        code_language: python3
+        code: "def main(pending_ids_json, failed, ignored_ids, newest_id, catchup, catchup_date):\n    import json\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n    return {\n        \"pending_ids_json\": pending_ids_json,\n        \"failed\": int(failed or 0),\n        \"ignored_json\": json.dumps(as_list(ignored_ids), ensure_ascii=False),\n        \"newest_id\": str(newest_id or \"\"),\n        \"catchup\": bool(catchup),\n        \"catchup_date\": str(catchup_date or \"\"),\n    }\n"
+        outputs:
+          pending_ids_json:
+            type: string
+          failed:
+            type: number
+          ignored_json:
+            type: string
+          newest_id:
+            type: string
+          catchup:
+            type: boolean
+          catchup_date:
+            type: string
+        desc: ''
+        selected: false
+      height: 200
+      id: '1700000056'
+      position:
+        x: 5900
+        y: 1360
+      positionAbsolute:
+        x: 5900
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Advance baseline
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_advance
+        tool_label: Advance baseline
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          pending_ids_json:
+            type: variable
+            value:
+            - '1700000056'
+            - pending_ids_json
+          newest_id:
+            type: variable
+            value:
+            - '1700000056'
+            - newest_id
+          failed:
+            type: variable
+            value:
+            - '1700000056'
+            - failed
+          ignored_ids_json:
+            type: variable
+            value:
+            - '1700000056'
+            - ignored_json
+          catchup:
+            type: variable
+            value:
+            - '1700000056'
+            - catchup
+          catchup_date:
+            type: variable
+            value:
+            - '1700000056'
+            - catchup_date
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000057'
+      position:
+        x: 6160
+        y: 1360
+      positionAbsolute:
+        x: 6160
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Release lock
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: state_unlock
+        tool_label: Release lock
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          owner:
+            type: variable
+            value:
+            - sys
+            - workflow_run_id
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000058'
+      position:
+        x: 6420
+        y: 1360
+      positionAbsolute:
+        x: 6420
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: candidates
+          value_type: number
+          value_selector:
+          - '1700000034'
+          - candidate_count
+        - variable: ok
+          value_type: number
+          value_selector:
+          - '1700000052'
+          - ok
+        - variable: failed
+          value_type: number
+          value_selector:
+          - '1700000052'
+          - failed
+        - variable: skipped
+          value_type: number
+          value_selector:
+          - '1700000052'
+          - skipped
+        - variable: last_seen
+          value_type: string
+          value_selector:
+          - '1700000057'
+          - last_seen
+        - variable: gave_up
+          value_type: boolean
+          value_selector:
+          - '1700000057'
+          - gave_up
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000059'
+      position:
+        x: 6680
+        y: 1360
+      positionAbsolute:
+        x: 6680
+        y: 1360
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Manual login?
+        cases:
+        - case_id: case-login
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: login
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000070'
+      position:
+        x: 1420
+        y: 800
+      positionAbsolute:
+        x: 1420
+        y: 800
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Start device sign-in
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: auth_start
+        tool_label: Start device sign-in
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          tenant:
+            type: variable
+            value:
+            - env
+            - TENANT
+          client_id:
+            type: variable
+            value:
+            - env
+            - CLIENT_ID
+          force_new:
+            type: constant
+            value: true
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000071'
+      position:
+        x: 1680
+        y: 800
+      positionAbsolute:
+        x: 1680
+        y: 800
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: user_code
+          value_type: string
+          value_selector:
+          - '1700000071'
+          - user_code
+        - variable: verification_uri
+          value_type: string
+          value_selector:
+          - '1700000071'
+          - verification_uri
+        - variable: expires_in
+          value_type: number
+          value_selector:
+          - '1700000071'
+          - expires_in
+        - variable: fresh
+          value_type: boolean
+          value_selector:
+          - '1700000071'
+          - fresh
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000072'
+      position:
+        x: 1960
+        y: 800
+      positionAbsolute:
+        x: 1960
+        y: 800
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Manual login poll?
+        cases:
+        - case_id: case-login-poll
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: login_poll
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000073'
+      position:
+        x: 1420
+        y: 1000
+      positionAbsolute:
+        x: 1420
+        y: 1000
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Poll sign-in
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: auth_poll
+        tool_label: Poll sign-in
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters: {}
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000074'
+      position:
+        x: 1680
+        y: 1000
+      positionAbsolute:
+        x: 1680
+        y: 1000
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: signed_in_0075
+          value_type: boolean
+          value_selector:
+          - '1700000074'
+          - signed_in
+        - variable: status
+          value_type: string
+          value_selector:
+          - '1700000074'
+          - status
+        - variable: account_0075
+          value_type: string
+          value_selector:
+          - '1700000074'
+          - account
+        - variable: error
+          value_type: string
+          value_selector:
+          - '1700000074'
+          - error
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000075'
+      position:
+        x: 1960
+        y: 1000
+      positionAbsolute:
+        x: 1960
+        y: 1000
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Start sign-in
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: auth_start
+        tool_label: Start sign-in
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters:
+          tenant:
+            type: variable
+            value:
+            - env
+            - TENANT
+          client_id:
+            type: variable
+            value:
+            - env
+            - CLIENT_ID
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000076'
+      position:
+        x: 2220
+        y: 1120
+      positionAbsolute:
+        x: 2220
+        y: 1120
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: New code?
+        cases:
+        - case_id: case-fresh
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000076'
+            - fresh
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000077'
+      position:
+        x: 2480
+        y: 1120
+      positionAbsolute:
+        x: 2480
+        y: 1120
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: human-input
+        title: Device sign-in
+        form_content: '## Microsoft sign-in required
+
+
+          Device code: **{{#1700000076.user_code#}}**
+
+
+          Authorization link: {{#1700000076.verification_uri#}}
+
+
+          Complete the sign-in in your browser, then click the button below.'
+        inputs: []
+        user_actions:
+        - id: done
+          title: I have completed the sign-in
+          button_style: primary
+        - id: cancel
+          title: Cancel
+          button_style: default
+        timeout: 1
+        timeout_unit: hour
+        delivery_methods:
+        - type: email
+          enabled: true
+          config:
+            recipients:
+              whole_workspace: true
+              items: []
+            subject: 'Email Manager sign-in: complete the Microsoft device code authorization'
+            body: 'Device code: {{#1700000076.user_code#}}
+
+              Authorization link: {{#1700000076.verification_uri#}}
+
+
+              After authorizing, open the form below and click "I have completed the sign-in":
+
+              {{#url#}}'
+            debug_mode: false
+        desc: ''
+        selected: false
+      height: 160
+      id: '1700000078'
+      position:
+        x: 2740
+        y: 1000
+      positionAbsolute:
+        x: 2740
+        y: 1000
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 320
+    - data:
+        type: tool
+        title: Poll sign-in
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: auth_poll
+        tool_label: Poll sign-in
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters: {}
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000079'
+      position:
+        x: 3080
+        y: 1000
+      positionAbsolute:
+        x: 3080
+        y: 1000
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Signed in?
+        cases:
+        - case_id: case-login-signed
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000079'
+            - signed_in
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000080'
+      position:
+        x: 3340
+        y: 1000
+      positionAbsolute:
+        x: 3340
+        y: 1000
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0081
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000081'
+      position:
+        x: 3600
+        y: 900
+      positionAbsolute:
+        x: 3600
+        y: 900
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0022
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000022'
+      position:
+        x: 3600
+        y: 1060
+      positionAbsolute:
+        x: 3600
+        y: 1060
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0082
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000082'
+      position:
+        x: 3080
+        y: 1180
+      positionAbsolute:
+        x: 3080
+        y: 1180
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0083
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000083'
+      position:
+        x: 3080
+        y: 1300
+      positionAbsolute:
+        x: 3080
+        y: 1300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: tool
+        title: Poll pending sign-in
+        desc: ''
+        provider_id: MiKasss666/email_manager/email_manager
+        provider_name: MiKasss666/email_manager/email_manager
+        provider_type: builtin
+        plugin_id: MiKasss666/email_manager
+        tool_name: auth_poll
+        tool_label: Poll pending sign-in
+        tool_description: ''
+        tool_node_version: '2'
+        tool_configurations: {}
+        tool_parameters: {}
+        is_team_authorization: true
+        selected: false
+      height: 110
+      id: '1700000084'
+      position:
+        x: 2740
+        y: 1200
+      positionAbsolute:
+        x: 2740
+        y: 1200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: if-else
+        title: Signed in?
+        cases:
+        - case_id: case-quick-signed
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000084'
+            - signed_in
+            comparison_operator: is
+            value: 'true'
+        logical_operator: and
+        desc: ''
+        selected: false
+      height: 140
+      id: '1700000085'
+      position:
+        x: 3000
+        y: 1200
+      positionAbsolute:
+        x: 3000
+        y: 1200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        type: end
+        title: End
+        outputs:
+        - variable: run_id_0086
+          value_type: string
+          value_selector:
+          - sys
+          - workflow_run_id
+        desc: ''
+        selected: false
+      height: 90
+      id: '1700000086'
+      position:
+        x: 3260
+        y: 1300
+      positionAbsolute:
+        x: 3260
+        y: 1300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.5

@@ -1,0 +1,57 @@
+identity:
+  name: state_lock
+  display_name: "Acquire Lock"
+  author: MiKasss666
+  label:
+    en_US: "Acquire Lock"
+    zh_Hans: "获取运行锁"
+description:
+  human:
+    en_US: "Best-effort single-flight lock so two overlapping workflow runs do not process the same mails."
+    zh_Hans: "Best-effort single-flight lock so two overlapping workflow runs do not process the same mails."
+  llm: "Best-effort single-flight lock so two overlapping workflow runs do not process the same mails."
+parameters:
+  - name: owner
+    type: string
+    required: true
+    label:
+      en_US: "Owner"
+      zh_Hans: "持有者"
+    human_description:
+      en_US: "Owner"
+      zh_Hans: "持有者"
+    llm_description: "Usually the workflow run id"
+    form: llm
+  - name: ttl_seconds
+    type: number
+    required: false
+    default: 300
+    label:
+      en_US: "TTL"
+      zh_Hans: "锁时长（秒）"
+    human_description:
+      en_US: "TTL"
+      zh_Hans: "锁时长（秒）"
+    llm_description: "Lock lifetime in seconds"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    acquired:
+      type: boolean
+      description: "True when the lock was acquired"
+    holder:
+      type: string
+      description: "Current lock holder"
+    lock_until:
+      type: number
+      description: "Unix timestamp when the lock expires"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/state_lock.py

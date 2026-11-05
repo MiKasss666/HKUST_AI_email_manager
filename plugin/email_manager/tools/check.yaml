@@ -1,0 +1,40 @@
+identity:
+  name: check
+  display_name: "Check"
+  author: MiKasss666
+  label:
+    en_US: "Check"
+    zh_Hans: "自检"
+description:
+  human:
+    en_US: "Read-only self check: credential, Microsoft account, inbox size."
+    zh_Hans: "Read-only self check: credential, Microsoft account, inbox size."
+  llm: "Read-only self check: credential, Microsoft account, inbox size."
+parameters:
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    signed_in:
+      type: boolean
+      description: "True when signed in"
+    account:
+      type: string
+      description: "Signed-in Microsoft account"
+    display_name:
+      type: string
+      description: "Display name"
+    inbox_count:
+      type: number
+      description: "Messages in the inbox"
+    token_expires_in:
+      type: number
+      description: "Seconds until the access token expires"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/check.py

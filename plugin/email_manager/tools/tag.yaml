@@ -1,0 +1,60 @@
+identity:
+  name: tag
+  display_name: "Tag Messages"
+  author: MiKasss666
+  label:
+    en_US: "Tag Messages"
+    zh_Hans: "打标签"
+description:
+  human:
+    en_US: "Add labels (typically Sum) to messages without touching any user-defined category."
+    zh_Hans: "Add labels (typically Sum) to messages without touching any user-defined category."
+  llm: "Add labels (typically Sum) to messages without touching any user-defined category."
+parameters:
+  - name: entryids_json
+    type: string
+    required: true
+    label:
+      en_US: "Entry ids JSON"
+      zh_Hans: "邮件 ID JSON"
+    human_description:
+      en_US: "Entry ids JSON"
+      zh_Hans: "邮件 ID JSON"
+    llm_description: "JSON array of message ids"
+    form: llm
+  - name: names_json
+    type: string
+    required: false
+    default: "[\"Sum\"]"
+    label:
+      en_US: "Label names JSON"
+      zh_Hans: "标签名 JSON"
+    human_description:
+      en_US: "Label names JSON"
+      zh_Hans: "标签名 JSON"
+    llm_description: "JSON array of label names to add"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    transient:
+      type: boolean
+      description: "True for temporary failures"
+    ok:
+      type: number
+      description: "Mails tagged"
+    failed:
+      type: number
+      description: "Mails that could not be tagged"
+    errors:
+      type: array
+      description: "Per-mail errors"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/tag.py

@@ -1,0 +1,39 @@
+version: 0.1.4
+type: plugin
+author: MiKasss666
+name: email_manager
+label:
+  en_US: Email Manager
+  zh_Hans: 邮件管理器
+description:
+  en_US: Microsoft Graph mailbox tools for the AI Email Manager Dify workflow - device-code sign-in, classified write-back, watcher state and HTML reports.
+  zh_Hans: AI 邮件管理器 Dify 工作流用的 Microsoft Graph 邮箱工具：设备码登录、分级写回、监听状态与 HTML 报告。
+icon: icon.svg
+icon_dark: icon.svg
+resource:
+  memory: 268435456
+  permission:
+    tool:
+      enabled: true
+    storage:
+      enabled: true
+      size: 10485760
+plugins:
+  tools:
+    - provider/email_manager.yaml
+network:
+  domains:
+    - graph.microsoft.com
+    - login.microsoftonline.com
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+  minimum_dify_version: 1.10.0
+created_at: "2026-11-05T00:00:00Z"
+privacy: PRIVACY.md

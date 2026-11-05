@@ -1,0 +1,138 @@
+identity:
+  name: state_set
+  display_name: "Set State"
+  author: MiKasss666
+  label:
+    en_US: "Set State"
+    zh_Hans: "设置状态"
+description:
+  human:
+    en_US: "Pause/resume the automatic processing, clear the failure counter or remember when the login prompt was sent."
+    zh_Hans: "Pause/resume the automatic processing, clear the failure counter or remember when the login prompt was sent."
+  llm: "Pause/resume the automatic processing, clear the failure counter or remember when the login prompt was sent."
+parameters:
+  - name: update_paused
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Update pause flag"
+      zh_Hans: "更新暂停标志"
+    human_description:
+      en_US: "Update pause flag"
+      zh_Hans: "更新暂停标志"
+    llm_description: "When true, the paused flag is written; when false the current flag is kept"
+    form: llm
+  - name: paused
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Paused"
+      zh_Hans: "暂停"
+    human_description:
+      en_US: "Paused"
+      zh_Hans: "暂停"
+    llm_description: "Target pause value (only when update_paused is true)"
+    form: llm
+  - name: reason
+    type: string
+    required: false
+    label:
+      en_US: "Reason"
+      zh_Hans: "原因"
+    human_description:
+      en_US: "Reason"
+      zh_Hans: "原因"
+    llm_description: "Short reason stored for diagnostics"
+    form: llm
+  - name: clear_failed
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Clear failed rounds"
+      zh_Hans: "清零失败轮次"
+    human_description:
+      en_US: "Clear failed rounds"
+      zh_Hans: "清零失败轮次"
+    llm_description: "When true, resets the consecutive failure counter"
+    form: llm
+  - name: reset_baseline
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Reset baseline"
+      zh_Hans: "重置基线"
+    human_description:
+      en_US: "Reset baseline"
+      zh_Hans: "重置基线"
+    llm_description: "When true, clears last_seen so recent mail is processed again (test/reset)"
+    form: llm
+  - name: clear_ignored
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Clear ignored"
+      zh_Hans: "清空忽略列表"
+    human_description:
+      en_US: "Clear ignored"
+      zh_Hans: "清空忽略列表"
+    llm_description: "When true, clears the remembered ignored (non-school) message ids"
+    form: llm
+  - name: mark_daily_report
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Mark daily report"
+      zh_Hans: "记录日报时间"
+    human_description:
+      en_US: "Mark daily report"
+      zh_Hans: "记录日报时间"
+    llm_description: "When true, stores today's date so the midnight daily report is not sent twice"
+    form: llm
+  - name: mark_weekly_report
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Mark weekly report"
+      zh_Hans: "记录周报时间"
+    human_description:
+      en_US: "Mark weekly report"
+      zh_Hans: "记录周报时间"
+    llm_description: "When true, stores today's date so the Sunday weekly report is not sent twice"
+    form: llm
+  - name: mark_auth_prompted
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Mark login prompt"
+      zh_Hans: "记录登录提示时间"
+    human_description:
+      en_US: "Mark login prompt"
+      zh_Hans: "记录登录提示时间"
+    llm_description: "When true, stores the current time as the last device-code prompt (anti-spam)"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    paused:
+      type: boolean
+      description: "Current pause flag"
+    last_seen:
+      type: string
+      description: "Current baseline message id (empty after a reset)"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/state_set.py

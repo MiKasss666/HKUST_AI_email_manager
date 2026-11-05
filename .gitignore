@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+build/
+plugin/email_manager/tests/__pycache__/
+*.difypkg

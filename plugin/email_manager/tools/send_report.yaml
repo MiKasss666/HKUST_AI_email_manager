@@ -1,0 +1,61 @@
+identity:
+  name: send_report
+  display_name: "Send Report"
+  author: MiKasss666
+  label:
+    en_US: "Send Report"
+    zh_Hans: "发送报告"
+description:
+  human:
+    en_US: "Send an HTML e-mail to the signed-in mailbox (used for the summary report and alert mails)."
+    zh_Hans: "Send an HTML e-mail to the signed-in mailbox (used for the summary report and alert mails)."
+  llm: "Send an HTML e-mail to the signed-in mailbox (used for the summary report and alert mails)."
+parameters:
+  - name: to
+    type: string
+    required: true
+    label:
+      en_US: "To"
+      zh_Hans: "收件人"
+    human_description:
+      en_US: "To"
+      zh_Hans: "收件人"
+    llm_description: "Recipient e-mail address"
+    form: llm
+  - name: subject
+    type: string
+    required: true
+    label:
+      en_US: "Subject"
+      zh_Hans: "主题"
+    human_description:
+      en_US: "Subject"
+      zh_Hans: "主题"
+    llm_description: "Mail subject"
+    form: llm
+  - name: html
+    type: string
+    required: true
+    label:
+      en_US: "HTML"
+      zh_Hans: "HTML 正文"
+    human_description:
+      en_US: "HTML"
+      zh_Hans: "HTML 正文"
+    llm_description: "HTML body"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    transient:
+      type: boolean
+      description: "True for temporary failures"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/send_report.py

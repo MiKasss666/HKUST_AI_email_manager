@@ -1,0 +1,34 @@
+identity:
+  name: auth_poll
+  display_name: "Poll Device Sign-in"
+  author: MiKasss666
+  label:
+    en_US: "Poll Device Sign-in"
+    zh_Hans: "轮询设备码登录"
+description:
+  human:
+    en_US: "Poll Microsoft once for the pending device-code sign-in result."
+    zh_Hans: "Poll Microsoft once for the pending device-code sign-in result."
+  llm: "Poll Microsoft once for the pending device-code sign-in result."
+parameters:
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    signed_in:
+      type: boolean
+      description: "True when sign-in completed"
+    status:
+      type: string
+      description: "signed_in / pending"
+    account:
+      type: string
+      description: "Signed-in Microsoft account"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/auth_poll.py

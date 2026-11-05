@@ -1,0 +1,66 @@
+identity:
+  name: apply
+  display_name: "Apply Verdicts"
+  author: MiKasss666
+  label:
+    en_US: "Apply Verdicts"
+    zh_Hans: "写回分级结果"
+description:
+  human:
+    en_US: "Write classification results back to the mailbox: merge categories (keep the user's own labels), flag urgent S mail, skip non-school mail and remember its id."
+    zh_Hans: "Write classification results back to the mailbox: merge categories (keep the user's own labels), flag urgent S mail, skip non-school mail and remember its id."
+  llm: "Write classification results back to the mailbox: merge categories (keep the user's own labels), flag urgent S mail, skip non-school mail and remember its id."
+parameters:
+  - name: verdicts_json
+    type: string
+    required: true
+    label:
+      en_US: "Verdicts JSON"
+      zh_Hans: "分级结果 JSON"
+    human_description:
+      en_US: "Verdicts JSON"
+      zh_Hans: "分级结果 JSON"
+    llm_description: "JSON array of {entryid, level, urgent, is_school, categories?}"
+    form: llm
+  - name: dry_run
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Dry run"
+      zh_Hans: "只判定不写回"
+    human_description:
+      en_US: "Dry run"
+      zh_Hans: "只判定不写回"
+    llm_description: "When true no mailbox change is made"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    transient:
+      type: boolean
+      description: "True for temporary failures"
+    ok:
+      type: number
+      description: "Mails written"
+    failed:
+      type: number
+      description: "Mails that could not be written"
+    skipped:
+      type: number
+      description: "Non-school mails left untouched"
+    ignored_ids:
+      type: array[string]
+      description: "Ids of skipped non-school mails"
+    errors:
+      type: array
+      description: "Per-mail errors"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/apply.py

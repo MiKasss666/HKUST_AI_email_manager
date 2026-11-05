@@ -1,0 +1,32 @@
+identity:
+  author: your-github-handle
+  name: email_manager
+  label:
+    en_US: Email Manager
+    zh_Hans: 邮件管理器
+  description:
+    en_US: Microsoft Graph mailbox tools for the AI Email Manager Dify workflow (device-code sign-in, classification write-back, state, reports).
+    zh_Hans: AI 邮件管理器 Dify 工作流用的 Microsoft Graph 邮箱工具（设备码登录、分级写回、状态、报告）。
+  icon: icon.svg
+  tags:
+    - productivity
+    - business
+tools:
+  - tools/auth_status.yaml
+  - tools/auth_start.yaml
+  - tools/auth_poll.yaml
+  - tools/auth_sign_out.yaml
+  - tools/check.yaml
+  - tools/collect.yaml
+  - tools/collect_recent.yaml
+  - tools/apply.yaml
+  - tools/tag.yaml
+  - tools/send_report.yaml
+  - tools/state_get.yaml
+  - tools/state_lock.yaml
+  - tools/state_unlock.yaml
+  - tools/state_advance.yaml
+  - tools/state_set.yaml
+extra:
+  python:
+    source: provider/email_manager.py

@@ -1,0 +1,107 @@
+identity:
+  name: state_advance
+  display_name: "Advance Baseline"
+  author: MiKasss666
+  label:
+    en_US: "Advance Baseline"
+    zh_Hans: "推进基线"
+description:
+  human:
+    en_US: "Persist the round result: advance the baseline only when the round really completed, remember ignored ids, reset or increment failed rounds and record the catch-up date."
+    zh_Hans: "Persist the round result: advance the baseline only when the round really completed, remember ignored ids, reset or increment failed rounds and record the catch-up date."
+  llm: "Persist the round result: advance the baseline only when the round really completed, remember ignored ids, reset or increment failed rounds and record the catch-up date."
+parameters:
+  - name: pending_ids_json
+    type: string
+    required: false
+    default: "[]"
+    label:
+      en_US: "Pending ids JSON"
+      zh_Hans: "本轮处理 ID JSON"
+    human_description:
+      en_US: "Pending ids JSON"
+      zh_Hans: "本轮处理 ID JSON"
+    llm_description: "JSON array of ids processed this round, newest first"
+    form: llm
+  - name: newest_id
+    type: string
+    required: false
+    label:
+      en_US: "Newest id"
+      zh_Hans: "最新邮件 ID"
+    human_description:
+      en_US: "Newest id"
+      zh_Hans: "最新邮件 ID"
+    llm_description: "Newest inbox message id this round (used when no candidates)"
+    form: llm
+  - name: failed
+    type: number
+    required: false
+    default: 0
+    label:
+      en_US: "Failed"
+      zh_Hans: "失败封数"
+    human_description:
+      en_US: "Failed"
+      zh_Hans: "失败封数"
+    llm_description: "Number of mails that failed this round"
+    form: llm
+  - name: ignored_ids_json
+    type: string
+    required: false
+    default: "[]"
+    label:
+      en_US: "Ignored ids JSON"
+      zh_Hans: "非学校邮件 ID JSON"
+    human_description:
+      en_US: "Ignored ids JSON"
+      zh_Hans: "非学校邮件 ID JSON"
+    llm_description: "JSON array of non-school ids to remember"
+    form: llm
+  - name: catchup
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Catch-up round"
+      zh_Hans: "补分类轮次"
+    human_description:
+      en_US: "Catch-up round"
+      zh_Hans: "补分类轮次"
+    llm_description: "When true, the baseline is not modified (catch-up scans older mail)"
+    form: llm
+  - name: catchup_date
+    type: string
+    required: false
+    label:
+      en_US: "Catch-up date"
+      zh_Hans: "补分类日期"
+    human_description:
+      en_US: "Catch-up date"
+      zh_Hans: "补分类日期"
+    llm_description: "When set (YYYY-MM-DD), records that the daily catch-up ran"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    last_seen:
+      type: string
+      description: "New baseline"
+    failed_rounds:
+      type: number
+      description: "Consecutive failed rounds"
+    gave_up:
+      type: boolean
+      description: "True when the failure limit was reached and the baseline advanced"
+    ignored_added:
+      type: number
+      description: "Newly remembered non-school ids"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/state_advance.py

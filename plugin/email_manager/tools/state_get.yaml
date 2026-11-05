@@ -1,0 +1,28 @@
+identity:
+  name: state_get
+  display_name: "Get State"
+  author: MiKasss666
+  label:
+    en_US: "Get State"
+    zh_Hans: "读取状态"
+description:
+  human:
+    en_US: "Read the persisted watcher state (baseline, failed rounds, ignored ids, lock, pause flag)."
+    zh_Hans: "Read the persisted watcher state (baseline, failed rounds, ignored ids, lock, pause flag)."
+  llm: "Read the persisted watcher state (baseline, failed rounds, ignored ids, lock, pause flag)."
+parameters:
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    state:
+      type: object
+      description: "Watcher state"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/state_get.py

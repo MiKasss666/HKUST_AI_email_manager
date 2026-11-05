@@ -1,0 +1,88 @@
+identity:
+  name: auth_start
+  display_name: "Start Device Sign-in"
+  author: MiKasss666
+  label:
+    en_US: "Start Device Sign-in"
+    zh_Hans: "开始设备码登录"
+description:
+  human:
+    en_US: "Start Microsoft device-code sign-in and return the code and verification link for the user."
+    zh_Hans: "Start Microsoft device-code sign-in and return the code and verification link for the user."
+  llm: "Start Microsoft device-code sign-in and return the code and verification link for the user."
+parameters:
+  - name: tenant
+    type: string
+    required: false
+    label:
+      en_US: "Tenant"
+      zh_Hans: "租户"
+    human_description:
+      en_US: "Tenant"
+      zh_Hans: "租户"
+    llm_description: "Microsoft tenant: common (default), organizations, or a tenant id/domain"
+    form: llm
+  - name: client_id
+    type: string
+    required: false
+    label:
+      en_US: "Client ID"
+      zh_Hans: "客户端 ID"
+    human_description:
+      en_US: "Client ID"
+      zh_Hans: "客户端 ID"
+    llm_description: "Optional own Entra public client id; leave empty to use Microsoft's public clients"
+    form: llm
+  - name: scopes
+    type: string
+    required: false
+    label:
+      en_US: "Scopes"
+      zh_Hans: "权限范围"
+    human_description:
+      en_US: "Scopes"
+      zh_Hans: "权限范围"
+    llm_description: "Optional scope override; leave empty for Mail.ReadWrite + Mail.Send + offline_access"
+    form: llm
+  - name: force_new
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Force New Code"
+      zh_Hans: "强制新码"
+    human_description:
+      en_US: "Force New Code"
+      zh_Hans: "强制新码"
+    llm_description: "Create a brand-new device code instead of reusing the pending one"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    user_code:
+      type: string
+      description: "Code to enter on the Microsoft sign-in page"
+    verification_uri:
+      type: string
+      description: "Sign-in URL (may already contain the code)"
+    expires_in:
+      type: number
+      description: "Device code lifetime in seconds"
+    client_label:
+      type: string
+      description: "Which Microsoft public client was used"
+    fresh:
+      type: boolean
+      description: "True when a new code was created, false when an existing pending code is reused"
+    message:
+      type: string
+      description: "Human instructions"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/auth_start.py

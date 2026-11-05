@@ -1,0 +1,90 @@
+identity:
+  name: collect
+  display_name: "Collect Mail"
+  author: MiKasss666
+  label:
+    en_US: "Collect Mail"
+    zh_Hans: "采集待处理邮件"
+description:
+  human:
+    en_US: "Scan the inbox headers, skip already-processed and control mail, download bodies for candidates, and return the candidates plus pending control mail (sum commands and untagged reports)."
+    zh_Hans: "Scan the inbox headers, skip already-processed and control mail, download bodies for candidates, and return the candidates plus pending control mail (sum commands and untagged reports)."
+  llm: "Scan the inbox headers, skip already-processed and control mail, download bodies for candidates, and return the candidates plus pending control mail (sum commands and untagged reports)."
+parameters:
+  - name: last_seen
+    type: string
+    required: false
+    label:
+      en_US: "Last seen"
+      zh_Hans: "上次基线"
+    human_description:
+      en_US: "Last seen"
+      zh_Hans: "上次基线"
+    llm_description: "Override the stored baseline; leave empty to use the plugin state"
+    form: llm
+  - name: days
+    type: number
+    required: false
+    default: 7
+    label:
+      en_US: "Days"
+      zh_Hans: "回溯天数"
+    human_description:
+      en_US: "Days"
+      zh_Hans: "回溯天数"
+    llm_description: "Only scan messages received in the last N days"
+    form: llm
+  - name: max_items
+    type: number
+    required: false
+    default: 30
+    label:
+      en_US: "Max items"
+      zh_Hans: "最多候选"
+    human_description:
+      en_US: "Max items"
+      zh_Hans: "最多候选"
+    llm_description: "Maximum number of candidate mails to return (1-30)"
+    form: llm
+  - name: catchup
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: "Catch-up"
+      zh_Hans: "补分类模式"
+    human_description:
+      en_US: "Catch-up"
+      zh_Hans: "补分类模式"
+    llm_description: "When true, ignore the baseline and scan the whole day window for unclassified mail"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    transient:
+      type: boolean
+      description: "True for temporary failures (network/429/5xx) - retry next round"
+    candidates:
+      type: array
+      description: "Mails to classify"
+    controls_commands:
+      type: array
+      description: "Unprocessed sum command mails"
+    controls_reports:
+      type: array
+      description: "Own report mails missing the Sum tag"
+    newest_id:
+      type: string
+      description: "Newest inbox message id"
+    oldest_id:
+      type: string
+      description: "Oldest candidate id (baseline target)"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/collect.py

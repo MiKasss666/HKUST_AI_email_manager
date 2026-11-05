@@ -1,0 +1,70 @@
+identity:
+  name: collect_recent
+  display_name: "Collect Classified Mail"
+  author: MiKasss666
+  label:
+    en_US: "Collect Classified Mail"
+    zh_Hans: "取已分级邮件"
+description:
+  human:
+    en_US: "Read recently classified mails (S/A/B/C categories) with their bodies, for the summary report."
+    zh_Hans: "Read recently classified mails (S/A/B/C categories) with their bodies, for the summary report."
+  llm: "Read recently classified mails (S/A/B/C categories) with their bodies, for the summary report."
+parameters:
+  - name: days
+    type: number
+    required: false
+    default: 7
+    label:
+      en_US: "Days"
+      zh_Hans: "回溯天数"
+    human_description:
+      en_US: "Days"
+      zh_Hans: "回溯天数"
+    llm_description: "Only scan messages received in the last N days"
+    form: llm
+  - name: letters
+    type: string
+    required: false
+    default: "sabc"
+    label:
+      en_US: "Levels"
+      zh_Hans: "级别"
+    human_description:
+      en_US: "Levels"
+      zh_Hans: "级别"
+    llm_description: "Levels to include, e.g. s, sa, sabc"
+    form: llm
+  - name: max_items
+    type: number
+    required: false
+    default: 100
+    label:
+      en_US: "Max items"
+      zh_Hans: "最多封数"
+    human_description:
+      en_US: "Max items"
+      zh_Hans: "最多封数"
+    llm_description: "Maximum number of mails to return"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    transient:
+      type: boolean
+      description: "True for temporary failures"
+    items:
+      type: array
+      description: "Classified mails with body"
+    count:
+      type: number
+      description: "Number of items"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/collect_recent.py

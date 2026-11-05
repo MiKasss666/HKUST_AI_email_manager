@@ -1,0 +1,34 @@
+identity:
+  name: auth_status
+  display_name: "Auth Status"
+  author: MiKasss666
+  label:
+    en_US: "Auth Status"
+    zh_Hans: "登录状态"
+description:
+  human:
+    en_US: "Check whether the plugin is signed in to Microsoft Graph and when the token expires."
+    zh_Hans: "Check whether the plugin is signed in to Microsoft Graph and when the token expires."
+  llm: "Check whether the plugin is signed in to Microsoft Graph and when the token expires."
+parameters:
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    signed_in:
+      type: boolean
+      description: "True when a credential is stored"
+    account:
+      type: string
+      description: "Signed-in Microsoft account"
+    token_expires_in:
+      type: number
+      description: "Seconds until the access token expires (0 when unknown)"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/auth_status.py

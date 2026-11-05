@@ -1,0 +1,39 @@
+identity:
+  name: state_unlock
+  display_name: "Release Lock"
+  author: MiKasss666
+  label:
+    en_US: "Release Lock"
+    zh_Hans: "释放运行锁"
+description:
+  human:
+    en_US: "Release the workflow run lock."
+    zh_Hans: "Release the workflow run lock."
+  llm: "Release the workflow run lock."
+parameters:
+  - name: owner
+    type: string
+    required: true
+    label:
+      en_US: "Owner"
+      zh_Hans: "持有者"
+    human_description:
+      en_US: "Owner"
+      zh_Hans: "持有者"
+    llm_description: "The same value used when acquiring"
+    form: llm
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    released:
+      type: boolean
+      description: "True when the lock is now free"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/state_unlock.py

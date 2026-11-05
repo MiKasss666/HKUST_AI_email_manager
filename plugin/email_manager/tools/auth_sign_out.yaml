@@ -1,0 +1,25 @@
+identity:
+  name: auth_sign_out
+  display_name: "Sign Out"
+  author: MiKasss666
+  label:
+    en_US: "Sign Out"
+    zh_Hans: "退出登录"
+description:
+  human:
+    en_US: "Forget the stored Microsoft credential for this workspace."
+    zh_Hans: "Forget the stored Microsoft credential for this workspace."
+  llm: "Forget the stored Microsoft credential for this workspace."
+parameters:
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/auth_sign_out.py
