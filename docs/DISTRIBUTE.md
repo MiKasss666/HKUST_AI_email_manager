@@ -13,8 +13,8 @@
 |---|---|
 | Dify Cloud 账号 | 用学校邮箱注册，Settings → Billing 里申请 **Education 折扣**（免费 Yearly Pro，20,000 Trigger Events/月） |
 | AI 模型 | 学校提供的 OpenAI 兼容 API（地址 + Key + 模型名）。在 **Integrations → Model Provider** 里添加 |
-| 插件包 | `email_manager.difypkg`（群文件），或 GitHub 仓库地址 |
-| DSL 文件 | `HKUST_AI_email_manager.yml`（群文件） |
+| 插件包 | 从 [Releases](https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest) 下载 `email_manager.difypkg` |
+| DSL 文件 | 从同一个 Release 下载 `HKUST_AI_email_manager.yml` |
 
 ---
 
