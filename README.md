@@ -80,6 +80,25 @@ Everything else is pre-filled:
 
 Click **Publish** afterwards — environment variable changes only apply when published.
 
+#### Recommended: fill in as much as you can
+
+The more context you give, the more accurate S/A/B/C classification and reports become.
+These variables are optional but strongly recommended — edit them once, then Publish:
+
+| Variable | Example | What it improves |
+|---|---|---|
+| `COURSES` | `COMP 1021, MATH 1014, LANG1416` | any mail mentioning one of your courses is raised to at least **A** |
+| `FACULTY` | `School of Science` | faculty/department mail is raised to at least **A** |
+| `NAME` | `Fok Pak Kwan` | detects mail that addresses **you** (`点名到我`) |
+| `STUDENT_ID` | `12345678` | same, by student id |
+| `DORM_KEYWORDS` | `UG Hall, 宿舍, Residence` | dorm/hall-related mail is raised to at least **A** |
+| `SCHOOL_DOMAINS` | `ust.hk` | sender-domain match counts as school mail |
+| `LANGUAGE` | `zh` or `en` | report language |
+| `URGENT_DAYS` | `14` | S-level "urgent" red-flag window (days) |
+| `SUMMARY_DAYS` | `7` | report window for `sum` / weekly report (days) |
+| `CATCHUP_DAYS` | `7` | how far back the daily catch-up scan looks |
+| `LETTERS` | `sabc` | default levels for manual/`sum` reports (`s` = S only, `sa` = S+A …) |
+
 ### 4. Sign in (automatic)
 
 1. Open **Access Point** and enable the **Schedule Trigger** (every 5 minutes);
@@ -113,6 +132,30 @@ Click **Publish** afterwards — environment variable changes only apply when pu
 | **Sunday 00:00–00:09** | Weekly report: `SUMMARY_DAYS` days (default 7); no extra daily report that day |
 
 The send date is recorded, so **nothing is sent twice on the same day**.
+
+### Summary by e-mail — the `sum` command
+
+The easiest way to get a report on demand: **send an e-mail to your own school mailbox** with the
+command as the subject. The next scheduled round (≤5 minutes) handles it:
+
+| Subject | Report content |
+|---|---|
+| `sum` | all levels (`LETTERS=sabc` by default) |
+| `sum sa` | only S and A |
+| `sum sabc` | explicit all levels |
+| `sum b` | only B |
+
+Rules:
+
+1. The subject must be **exactly** `sum` or `sum <levels>` (levels are any combination of `s/a/b/c`,
+   case-insensitive). Extra words — e.g. `Please send sum sa` — are treated as a normal mail and ignored;
+2. `FORCE_ACTION` must be `auto` (not a forced action);
+3. The next round: tags that command mail with **`Sum`**, then builds an HTML report from mails
+   classified within `SUMMARY_DAYS` (default 7) and sends it to `RECIPIENT`;
+4. The report mail itself gets its `Sum` label on the **following** round (so it is never reported twice);
+5. If there is no classified mail inside the window yet, no report is sent — run a classification round first.
+
+Also possible without e-mail: set `FORCE_ACTION=sum` → Publish → Test Run, and pick levels with `LETTERS`.
 
 ### `FORCE_ACTION` manual actions
 
@@ -262,6 +305,24 @@ Settings → Environment Variables：
 
 改完 **Publish**（环境变量必须发布才生效）。
 
+#### 建议：尽量填全这些信息
+
+你填的信息越多，S/A/B/C 判级和报告越准。以下都是可选项，但强烈建议填一次后 Publish：
+
+| 变量 | 示例 | 作用 |
+|---|---|---|
+| `COURSES` | `COMP 1021, MATH 1014, LANG1416` | 邮件提到你上的课 → 至少升到 **A** |
+| `FACULTY` | `School of Science` | 学院/系相关邮件 → 至少升到 **A** |
+| `NAME` | `Fok Pak Kwan` | 识别"点名到我"的邮件 |
+| `STUDENT_ID` | `12345678` | 同上，按学号识别 |
+| `DORM_KEYWORDS` | `UG Hall, 宿舍, Residence` | 宿舍/书院相关邮件 → 至少升到 **A** |
+| `SCHOOL_DOMAINS` | `ust.hk` | 发件域名命中即算学校邮件 |
+| `LANGUAGE` | `zh` 或 `en` | 报告语言 |
+| `URGENT_DAYS` | `14` | S 级"加急"红旗的截止窗口（天） |
+| `SUMMARY_DAYS` | `7` | `sum`/周报的报告窗口（天） |
+| `CATCHUP_DAYS` | `7` | 每天补扫回看的天数 |
+| `LETTERS` | `sabc` | 手动/`sum` 报告的默认级别（`s`=只 S，`sa`=S+A…） |
+
 ### 4. 登录（自动）
 
 1. Access Point 打开 **Schedule Trigger**（每 5 分钟）；
@@ -292,6 +353,29 @@ Settings → Environment Variables：
 | **周日 00:00–00:09** | 周报：`SUMMARY_DAYS` 天（默认 7 天）；当天不再另发日报 |
 
 发送后记录日期，**同一天不重复发**。
+
+### 用邮件触发总结 —— `sum` 指令
+
+最方便的出报告方式：**给自己的学校邮箱发一封邮件**，主题写指令，下一轮（≤5 分钟）就会处理：
+
+| 主题 | 报告内容 |
+|---|---|
+| `sum` | 全部级别（默认 `LETTERS=sabc`） |
+| `sum sa` | 只要 S 和 A |
+| `sum sabc` | 明确全部级别 |
+| `sum b` | 只要 B |
+
+规则：
+
+1. 主题必须**正好**是 `sum` 或 `sum <级别>`（级别是 `s/a/b/c` 的任意组合，大小写不限）。
+   多写别的字（如 `请帮我 sum sa`）会被当成普通邮件，不会触发；
+2. `FORCE_ACTION` 必须是 `auto`（不能是强制动作）；
+3. 下一轮会：先给这封指令邮件打 **`Sum`** 标签，再从 `SUMMARY_DAYS`（默认 7 天）内已分类的邮件
+   生成 HTML 报告，发到 `RECIPIENT`；
+4. 报告邮件本身会在**再下一轮**被打上 `Sum` 标签（所以不会被重复总结）；
+5. 如果窗口内还没有已分类邮件，不会发报告——先让分类跑一轮。
+
+不想发邮件时也可以用：`FORCE_ACTION=sum` → Publish → Test Run，级别由 `LETTERS` 决定。
 
 ### `FORCE_ACTION` 手动动作
 
