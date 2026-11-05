@@ -13,6 +13,8 @@ writes the categories back to Outlook, and sends daily / weekly / on-demand `sum
 > - Offline checks: DSL validation, all Code nodes smoke-tested, pipeline sample, 29 unit tests;
 > - A new user only fills **2 environment variables** (`EMAIL`, `RECIPIENT`); sign-in happens automatically through Dify e-mail.
 
+> **Language policy**: all user-facing docs and release notes are bilingual — English first, Chinese second.
+
 **GitHub**: <https://github.com/MiKasss666/HKUST_AI_email_manager>
 **Download (Release)**: <https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest>
 
