@@ -18,7 +18,9 @@ writes the categories back to Outlook, and sends daily / weekly / on-demand `sum
 
 ---
 
-## Download & install (recommended)
+## Download & install
+
+**Option A — release files (recommended)**
 
 1. Open [Releases](https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest) and download:
    - `email_manager.difypkg` (Dify plugin)
@@ -26,6 +28,12 @@ writes the categories back to Outlook, and sends daily / weekly / on-demand `sum
 2. Dify → Integrations → Install → **Local Package File** → pick `email_manager.difypkg`;
 3. Studio → Import DSL → pick `HKUST_AI_email_manager.yml`;
 4. Fill the 2 environment variables below → **Publish**.
+
+**Option B — install the plugin directly from GitHub**
+
+- Plugin repository: <https://github.com/MiKasss666/email_manager>
+- Dify → Integrations → Install → **From GitHub** → paste `MiKasss666/email_manager`
+- The workflow still comes from this repository's Release (`HKUST_AI_email_manager.yml`).
 
 Full new-user walkthrough: **[docs/DISTRIBUTE.md](docs/DISTRIBUTE.md)**.
 
@@ -192,7 +200,9 @@ More:
 
 ---
 
-## 下载与安装（推荐方式）
+## 下载与安装
+
+**方式 A —— 用 Release 文件（推荐）**
 
 1. 打开 [Releases](https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest)，下载两个文件：
    - `email_manager.difypkg`（插件包）
@@ -200,6 +210,12 @@ More:
 2. Dify → Integrations → Install → **Local Package File** → 选 `email_manager.difypkg`；
 3. Studio → Import DSL → 选 `HKUST_AI_email_manager.yml`；
 4. 按下面的「环境变量」填 2 个值 → Publish。
+
+**方式 B —— 直接从 GitHub 安装插件**
+
+- 插件仓库：<https://github.com/MiKasss666/email_manager>
+- Dify → Integrations → Install → **From GitHub** → 填 `MiKasss666/email_manager`
+- 工作流仍然从本仓库的 Release 下载（`HKUST_AI_email_manager.yml`）。
 
 完整的新用户步骤见 **[docs/DISTRIBUTE.md](docs/DISTRIBUTE.md)**。
 
