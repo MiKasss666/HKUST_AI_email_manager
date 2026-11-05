@@ -1,7 +1,7 @@
 identity:
   name: check
   display_name: "Check"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Check"
     zh_Hans: "自检"

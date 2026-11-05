@@ -1,7 +1,7 @@
 identity:
   name: send_report
   display_name: "Send Report"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Send Report"
     zh_Hans: "发送报告"

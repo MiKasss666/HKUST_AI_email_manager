@@ -1,7 +1,7 @@
 identity:
   name: auth_status
   display_name: "Auth Status"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Auth Status"
     zh_Hans: "登录状态"

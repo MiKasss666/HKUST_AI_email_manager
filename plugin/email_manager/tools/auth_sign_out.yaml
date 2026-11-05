@@ -1,7 +1,7 @@
 identity:
   name: auth_sign_out
   display_name: "Sign Out"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Sign Out"
     zh_Hans: "退出登录"

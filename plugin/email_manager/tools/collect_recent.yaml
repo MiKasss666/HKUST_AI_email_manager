@@ -1,7 +1,7 @@
 identity:
   name: collect_recent
   display_name: "Collect Classified Mail"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Collect Classified Mail"
     zh_Hans: "取已分级邮件"

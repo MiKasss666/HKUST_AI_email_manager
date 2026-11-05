@@ -1496,10 +1496,10 @@ workflow:
         type: tool
         title: Check mailbox
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: check
         tool_label: Check mailbox
         tool_description: ''
@@ -1559,10 +1559,10 @@ workflow:
         type: tool
         title: Resume processing
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_set
         tool_label: Resume processing
         tool_description: ''
@@ -1624,10 +1624,10 @@ workflow:
         type: tool
         title: Reset test baseline
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_set
         tool_label: Reset test baseline
         tool_description: ''
@@ -1694,10 +1694,10 @@ workflow:
         type: tool
         title: Sign out
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: auth_sign_out
         tool_label: Sign out
         tool_description: ''
@@ -1747,10 +1747,10 @@ workflow:
         type: tool
         title: Auth status
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: auth_status
         tool_label: Auth status
         tool_description: ''
@@ -1804,10 +1804,10 @@ workflow:
         type: tool
         title: Get state
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_get
         tool_label: Get state
         tool_description: ''
@@ -1919,10 +1919,10 @@ workflow:
         type: tool
         title: Collect report mail
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: collect_recent
         tool_label: Collect report mail
         tool_description: ''
@@ -2127,10 +2127,10 @@ workflow:
         type: tool
         title: Send report
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: send_report
         tool_label: Send report
         tool_description: ''
@@ -2169,10 +2169,10 @@ workflow:
         type: tool
         title: Mark report sent
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_set
         tool_label: Mark report sent
         tool_description: ''
@@ -2287,10 +2287,10 @@ workflow:
         type: tool
         title: Acquire lock
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_lock
         tool_label: Acquire lock
         tool_description: ''
@@ -2376,10 +2376,10 @@ workflow:
         type: tool
         title: Collect mail
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: collect
         tool_label: Collect mail
         tool_description: ''
@@ -2449,10 +2449,10 @@ workflow:
         type: tool
         title: Release lock
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_unlock
         tool_label: Release lock
         tool_description: ''
@@ -2633,10 +2633,10 @@ workflow:
         type: tool
         title: Tag control mail
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: tag
         tool_label: Tag control mail
         tool_description: ''
@@ -2698,10 +2698,10 @@ workflow:
         type: tool
         title: Collect classified mail
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: collect_recent
         tool_label: Collect classified mail
         tool_description: ''
@@ -2900,10 +2900,10 @@ workflow:
         type: tool
         title: Send report
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: send_report
         tool_label: Send report
         tool_description: ''
@@ -2984,10 +2984,10 @@ workflow:
         type: tool
         title: Advance baseline
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_advance
         tool_label: Advance baseline
         tool_description: ''
@@ -3043,10 +3043,10 @@ workflow:
         type: tool
         title: Release lock
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_unlock
         tool_label: Release lock
         tool_description: ''
@@ -3101,10 +3101,10 @@ workflow:
         type: tool
         title: Advance after report
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_advance
         tool_label: Advance after report
         tool_description: ''
@@ -3150,10 +3150,10 @@ workflow:
         type: tool
         title: Release lock
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_unlock
         tool_label: Release lock
         tool_description: ''
@@ -3351,10 +3351,10 @@ workflow:
         type: tool
         title: Write back
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: apply
         tool_label: Write back
         tool_description: ''
@@ -3418,10 +3418,10 @@ workflow:
         type: tool
         title: Release lock
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_unlock
         tool_label: Release lock
         tool_description: ''
@@ -3534,10 +3534,10 @@ workflow:
         type: tool
         title: Advance baseline
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_advance
         tool_label: Advance baseline
         tool_description: ''
@@ -3593,10 +3593,10 @@ workflow:
         type: tool
         title: Release lock
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: state_unlock
         tool_label: Release lock
         tool_description: ''
@@ -3704,10 +3704,10 @@ workflow:
         type: tool
         title: Start device sign-in
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: auth_start
         tool_label: Start device sign-in
         tool_description: ''
@@ -3813,10 +3813,10 @@ workflow:
         type: tool
         title: Poll sign-in
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: auth_poll
         tool_label: Poll sign-in
         tool_description: ''
@@ -3881,10 +3881,10 @@ workflow:
         type: tool
         title: Start sign-in
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: auth_start
         tool_label: Start sign-in
         tool_description: ''
@@ -4003,10 +4003,10 @@ workflow:
         type: tool
         title: Poll sign-in
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: auth_poll
         tool_label: Poll sign-in
         tool_description: ''
@@ -4156,10 +4156,10 @@ workflow:
         type: tool
         title: Poll pending sign-in
         desc: ''
-        provider_id: MiKasss666/email_manager/email_manager
-        provider_name: MiKasss666/email_manager/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
         provider_type: builtin
-        plugin_id: MiKasss666/email_manager
+        plugin_id: mikasss666/email_manager
         tool_name: auth_poll
         tool_label: Poll pending sign-in
         tool_description: ''

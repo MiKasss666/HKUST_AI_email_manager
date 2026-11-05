@@ -1,7 +1,7 @@
 identity:
   name: auth_start
   display_name: "Start Device Sign-in"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Start Device Sign-in"
     zh_Hans: "开始设备码登录"

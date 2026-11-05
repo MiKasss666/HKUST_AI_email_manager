@@ -1,7 +1,7 @@
 identity:
   name: state_unlock
   display_name: "Release Lock"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Release Lock"
     zh_Hans: "释放运行锁"

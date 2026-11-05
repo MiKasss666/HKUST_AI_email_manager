@@ -1,7 +1,7 @@
 identity:
   name: collect
   display_name: "Collect Mail"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Collect Mail"
     zh_Hans: "采集待处理邮件"

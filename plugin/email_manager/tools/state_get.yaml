@@ -1,7 +1,7 @@
 identity:
   name: state_get
   display_name: "Get State"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Get State"
     zh_Hans: "读取状态"

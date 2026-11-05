@@ -1,7 +1,7 @@
 identity:
   name: apply
   display_name: "Apply Verdicts"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Apply Verdicts"
     zh_Hans: "写回分级结果"

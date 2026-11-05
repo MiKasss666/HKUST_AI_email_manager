@@ -1,7 +1,7 @@
 identity:
   name: tag
   display_name: "Tag Messages"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Tag Messages"
     zh_Hans: "打标签"

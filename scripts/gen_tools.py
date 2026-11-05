@@ -13,7 +13,7 @@ import textwrap
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOOLS_DIR = os.path.join(ROOT, "plugin", "email_manager", "tools")
-AUTHOR = "MiKasss666"
+AUTHOR = "mikasss666"
 
 
 def pascal(name: str) -> str:

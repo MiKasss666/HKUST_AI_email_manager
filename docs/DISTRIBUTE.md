@@ -23,8 +23,8 @@
 **方式 A（推荐）**：从 [Releases](https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest) 下载 `email_manager.difypkg`，
 Integrations → Install → Local Package File → 选它。
 
-**方式 B**：Integrations → Install → **From GitHub** → 填 `MiKasss666/email_manager`
-（插件仓库：<https://github.com/MiKasss666/email_manager>）。
+**方式 B**：Integrations → Install → **From GitHub** → 填 `mikasss666/email_manager`
+（插件仓库：<https://github.com/mikasss666/email_manager>）。
 
 装好后点开 `Email Manager`，应该看到 **15 个工具**。
 

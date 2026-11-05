@@ -1,7 +1,7 @@
 identity:
   name: auth_poll
   display_name: "Poll Device Sign-in"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Poll Device Sign-in"
     zh_Hans: "轮询设备码登录"

@@ -1,6 +1,6 @@
 version: 0.1.4
 type: plugin
-author: MiKasss666
+author: mikasss666
 name: email_manager
 label:
   en_US: Email Manager

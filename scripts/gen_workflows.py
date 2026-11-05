@@ -22,7 +22,7 @@ import yaml
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "workflows")
 
-AUTHOR = "MiKasss666"
+AUTHOR = "mikasss666"
 PLUGIN = "email_manager"
 PLUGIN_ID = f"{AUTHOR}/{PLUGIN}"
 PROVIDER = f"{AUTHOR}/{PLUGIN}/{PLUGIN}"

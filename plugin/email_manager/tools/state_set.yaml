@@ -1,7 +1,7 @@
 identity:
   name: state_set
   display_name: "Set State"
-  author: MiKasss666
+  author: mikasss666
   label:
     en_US: "Set State"
     zh_Hans: "设置状态"
