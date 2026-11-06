@@ -26,7 +26,7 @@ FILES = [
 ENTRY_TYPES = {"start", "trigger-schedule", "trigger-webhook", "trigger-plugin"}
 # Dify environment variables only support these three value types. A boolean
 # value_type is accepted by import but makes GET /workflows/draft fail with 400.
-ALLOWED_ENV_TYPES = {"string", "number", "secret"}
+ALLOWED_ENV_TYPES = {"string", "integer", "number", "secret"}
 KNOWN_NODE_TYPES = {
     "start", "end", "answer", "llm", "code", "template-transform", "if-else",
     "question-classifier", "tool", "http-request", "variable-aggregator",

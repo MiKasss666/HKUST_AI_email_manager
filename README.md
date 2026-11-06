@@ -187,6 +187,10 @@ Also possible without e-mail: set `FORCE_ACTION=sum` → Publish → Test Run, a
 
 ## Development
 
+> **Note**: `workflows/HKUST_AI_email_manager.yml` is now a Dify **0.7.0** exported DSL with a tidy
+> node layout. If you edit the graph, do it in Dify and export/replace the file — running
+> `gen_workflows.py` would overwrite the layout with the generator's default positions.
+
 ```powershell
 # generate tools + the single workflow DSL
 py -3 scripts/gen_tools.py
@@ -406,6 +410,9 @@ Settings → Environment Variables：
 ---
 
 ## 开发
+
+> **注意**：`workflows/HKUST_AI_email_manager.yml` 现在是 Dify **0.7.0** 导出的 DSL，节点排版已整理。
+> 以后改节点请在 Dify 里改完再导出替换该文件；直接跑 `gen_workflows.py` 会用生成器的默认坐标覆盖排版。
 
 ```powershell
 # 生成工具 + 唯一的单工作流 DSL
