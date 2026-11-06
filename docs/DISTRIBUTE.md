@@ -69,6 +69,7 @@ Optional but strongly recommended — fill in as much as you can, it makes class
 | `DORM_KEYWORDS` | `UG Hall, 宿舍, Residence` | dorm-related mail is raised to at least A |
 | `LANGUAGE` | `zh` / `en` | report language |
 | `SUMMARY_DAYS` | `7` | report window for `sum` / weekly report |
+| `REPORT_MAX` | `50` | max mails listed in one report (effective max: 100) |
 | `URGENT_DAYS` | `14` | S-level urgent red-flag window |
 | `CATCHUP_DAYS` | `7` | daily catch-up scan window |
 | `LETTERS` | `sabc` | default levels for `sum` reports |
@@ -227,6 +228,7 @@ Settings → Environment Variables，**只需要改 2 个**：
 | `DORM_KEYWORDS` | `UG Hall, 宿舍, Residence` | 宿舍相关 → 至少升到 A |
 | `LANGUAGE` | `zh` / `en` | 报告语言 |
 | `SUMMARY_DAYS` | `7` | `sum`/周报的报告窗口 |
+| `REPORT_MAX` | `50` | 单份报告最多列出的邮件数（有效上限 100） |
 | `URGENT_DAYS` | `14` | S 级加急红旗窗口 |
 | `CATCHUP_DAYS` | `7` | 每日补扫窗口 |
 | `LETTERS` | `sabc` | `sum` 默认级别 |

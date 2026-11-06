@@ -173,6 +173,14 @@ workflow:
     - FORCE_ACTION
     value: auto
     value_type: string
+  - description: Max number of classified mails listed in one report (effective max 100).
+    id: env-report_max
+    name: REPORT_MAX
+    selector:
+    - env
+    - REPORT_MAX
+    value: 50
+    value_type: integer
   features:
     file_upload:
       allowed_file_extensions: []
@@ -2100,8 +2108,10 @@ workflow:
             - '1700000024'
             - report_letters
           max_items:
-            type: constant
-            value: 50
+            type: variable
+            value:
+            - env
+            - REPORT_MAX
         type: tool
       height: 52
       id: '1700000101'
@@ -2899,8 +2909,10 @@ workflow:
             - '1700000006'
             - letters
           max_items:
-            type: constant
-            value: 50
+            type: variable
+            value:
+            - env
+            - REPORT_MAX
         type: tool
       height: 52
       id: '1700000038'

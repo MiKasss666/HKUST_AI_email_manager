@@ -96,6 +96,7 @@ These variables are optional but strongly recommended — edit them once, then P
 | `LANGUAGE` | `zh` or `en` | report language |
 | `URGENT_DAYS` | `14` | S-level "urgent" red-flag window (days) |
 | `SUMMARY_DAYS` | `7` | report window for `sum` / weekly report (days) |
+| `REPORT_MAX` | `50` | max mails listed in one report (effective max: 100) |
 | `CATCHUP_DAYS` | `7` | how far back the daily catch-up scan looks |
 | `LETTERS` | `sabc` | default levels for manual/`sum` reports (`s` = S only, `sa` = S+A …) |
 
@@ -132,6 +133,9 @@ These variables are optional but strongly recommended — edit them once, then P
 | **Sunday 00:00–00:09** | Weekly report: `SUMMARY_DAYS` days (default 7); no extra daily report that day |
 
 The send date is recorded, so **nothing is sent twice on the same day**.
+One report lists at most `REPORT_MAX` classified mails (default 50, effective max 100) — raise it
+if your windows hold more. A 7-day and a 30-day report can show the same count when all classified
+mail falls inside the shorter window (or when both hit the cap).
 
 ### Summary by e-mail — the `sum` command
 
@@ -324,6 +328,7 @@ Settings → Environment Variables：
 | `LANGUAGE` | `zh` 或 `en` | 报告语言 |
 | `URGENT_DAYS` | `14` | S 级"加急"红旗的截止窗口（天） |
 | `SUMMARY_DAYS` | `7` | `sum`/周报的报告窗口（天） |
+| `REPORT_MAX` | `50` | 单份报告最多列出的邮件数（有效上限 100） |
 | `CATCHUP_DAYS` | `7` | 每天补扫回看的天数 |
 | `LETTERS` | `sabc` | 手动/`sum` 报告的默认级别（`s`=只 S，`sa`=S+A…） |
 
@@ -357,6 +362,8 @@ Settings → Environment Variables：
 | **周日 00:00–00:09** | 周报：`SUMMARY_DAYS` 天（默认 7 天）；当天不再另发日报 |
 
 发送后记录日期，**同一天不重复发**。
+每份报告最多列出 `REPORT_MAX` 封已分类邮件（默认 50，有效上限 100）——邮件多时调大即可。
+7 天报告和 30 天报告数量相同，通常是因为已分类邮件都在 7 天内，或两者都达到了上限。
 
 ### 用邮件触发总结 —— `sum` 指令
 
