@@ -18,6 +18,9 @@ writes the categories back to Outlook, and sends daily / weekly / on-demand `sum
 **GitHub**: <https://github.com/MiKasss666/HKUST_AI_email_manager>
 **Download (Release)**: <https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest>
 
+**For prototype reviewers** → **[docs/DEMO.md](docs/DEMO.md)**: guided walkthrough, workflow flow,
+example input → expected category table, reproduce steps and known limitations.
+
 ---
 
 ## Download & install
@@ -250,6 +253,8 @@ More:
 
 **GitHub**：<https://github.com/MiKasss666/HKUST_AI_email_manager>
 **下载（Release）**：<https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest>
+
+**给原型评审者** → **[docs/DEMO.md](docs/DEMO.md)**：演示流程、示例输入 → 预期分类表、复现步骤、已知限制。
 
 ---
 
