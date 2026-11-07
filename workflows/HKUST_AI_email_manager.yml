@@ -3694,7 +3694,7 @@ workflow:
       width: 242
       zIndex: 0
     - data:
-        code: "def main(pending_ids_json, failed, ignored_ids, newest_id, catchup, catchup_date):\n    import json\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n    return {\n        \"pending_ids_json\": pending_ids_json,\n        \"failed\": int(failed or 0),\n        \"ignored_json\": json.dumps(as_list(ignored_ids), ensure_ascii=False),\n        \"newest_id\": str(newest_id or \"\"),\n        \"catchup\": bool(catchup),\n        \"catchup_date\": str(catchup_date or \"\"),\n    }\n"
+        code: "def main(pending_ids_json, failed, ignored_ids, newest_id, catchup, catchup_date, validate_failed):\n    import json\n    def as_list(value):\n        if isinstance(value, list):\n            return value\n        try:\n            data = json.loads(value or \"[]\")\n            return data if isinstance(data, list) else []\n        except Exception:\n            return []\n    return {\n        \"pending_ids_json\": pending_ids_json,\n        \"failed\": int(failed or 0) + int(validate_failed or 0),\n        \"ignored_json\": json.dumps(as_list(ignored_ids), ensure_ascii=False),\n        \"newest_id\": str(newest_id or \"\"),\n        \"catchup\": bool(catchup),\n        \"catchup_date\": str(catchup_date or \"\"),\n    }\n"
         code_language: python3
         desc: ''
         outputs:
@@ -3738,6 +3738,10 @@ workflow:
           - '1700000034'
           - catchup_date
           variable: catchup_date
+        - variable: validate_failed
+          value_selector:
+          - '1700000051'
+          - failed
       height: 52
       id: '1700000056'
       position:

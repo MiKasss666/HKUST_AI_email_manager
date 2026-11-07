@@ -93,11 +93,12 @@ py -3 -m unittest discover -s tests
   work than it returns. The prototype polls every 5 minutes (user-adjustable).
 - **Outlook category definitions are created manually once** (S/A/B/C/Sum); Microsoft Graph cannot
   create the master category list for this account, so the workflow only applies categories.
-- **At most 20 mails are classified per run.** A backlog larger than 20 does not fail: each
-  5-minute run processes the next 20, so the inbox drains automatically over several runs without
-  user action.
-- **When a round's LLM answer cannot be validated** (item count differs from the 20 mails, or a mail
-  is missing/duplicated), that whole batch is discarded and retried in the next run; the
-  "last processed" pointer is not moved, so no mail is silently skipped. After 3 consecutive failed
-  rounds the workflow gives up on that batch and continues; the failure stays visible in the run log.
+- **At most 20 mails are classified per batch.** A larger backlog is not lost: the first day clears
+  up to two batches, and the automatic **daily catch-up** keeps picking up older unclassified mail
+  (about 20 per day) until the backlog is gone — no user action is needed, but a very large backlog
+  takes days rather than minutes.
+- **A batch whose LLM answer cannot be validated** (wrong item count, or a mail missing / duplicated)
+  counts as a **failed round**: the batch is retried in the next run, the "last processed" pointer is
+  not advanced, and after 3 consecutive failed rounds the workflow skips that batch and continues;
+  the failure stays visible in the run log.
 - Reports list at most `REPORT_MAX` mails (default 50, effective max 100) — configurable.
