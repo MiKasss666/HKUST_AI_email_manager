@@ -27,7 +27,7 @@ the plugin are needed to run it end-to-end (see [`docs/DISTRIBUTE.md`](DISTRIBUT
 | Category write-back, preserving user labels | `tools/apply.py` + plugin `lib/mailmeta.py` |
 | Daily 00:00 / Sunday 00:00 reports | workflow nodes `Scheduled report?` → `Send report` |
 | `sum` command by e-mail | `Plan round` → `Tag control mail` → report nodes |
-| Batch safety: ≤20 mails per round, retries | `Collect mail`, `Plan round`, baseline advance logic |
+| Batch safety: ≤20 mails per run, backlog drains over runs, failed batch retried next run | `Collect mail`, `Plan round`, baseline-advance logic |
 
 Workflow size: **86 nodes / 90 edges**, DSL version 0.7.0, a single 5-minute Schedule Trigger.
 
@@ -93,6 +93,11 @@ py -3 -m unittest discover -s tests
   work than it returns. The prototype polls every 5 minutes (user-adjustable).
 - **Outlook category definitions are created manually once** (S/A/B/C/Sum); Microsoft Graph cannot
   create the master category list for this account, so the workflow only applies categories.
-- **≤20 messages per round**: larger inboxes are handled across rounds; a rejected batch retries
-  without advancing the baseline.
+- **At most 20 mails are classified per run.** A backlog larger than 20 does not fail: each
+  5-minute run processes the next 20, so the inbox drains automatically over several runs without
+  user action.
+- **When a round's LLM answer cannot be validated** (item count differs from the 20 mails, or a mail
+  is missing/duplicated), that whole batch is discarded and retried in the next run; the
+  "last processed" pointer is not moved, so no mail is silently skipped. After 3 consecutive failed
+  rounds the workflow gives up on that batch and continues; the failure stays visible in the run log.
 - Reports list at most `REPORT_MAX` mails (default 50, effective max 100) — configurable.
