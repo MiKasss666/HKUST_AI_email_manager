@@ -4,3 +4,5 @@
 build/
 *.difypkg
 .pytest_cache/
+
+docs/assignment/
