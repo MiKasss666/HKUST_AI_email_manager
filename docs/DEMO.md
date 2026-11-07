@@ -71,8 +71,9 @@ Reviewers can use scenarios 1–6 as their test checklist: classification is det
    [latest release](https://github.com/MiKasss666/HKUST_AI_email_manager/releases/latest);
 2. Install the plugin in a Dify Cloud workspace (Integrations → Install → Local Package File);
 3. Import the workflow (Studio → Import DSL), pick a model, fill `EMAIL` / `RECIPIENT`, Publish;
-4. Enable the Schedule Trigger in Access Point; the first round sends a sign-in e-mail.
-5. Full new-user walkthrough: [`docs/DISTRIBUTE.md`](DISTRIBUTE.md).
+4. Create the Outlook categories `S`, `A`, `B`, `C`, `Sum` once (Settings → Mail → Categories);
+5. Enable the Schedule Trigger in Access Point; the first round sends a sign-in e-mail.
+6. Full new-user walkthrough: [`docs/DISTRIBUTE.md`](DISTRIBUTE.md).
 
 Local checks anyone can run (no Dify, no network):
 

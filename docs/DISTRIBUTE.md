@@ -78,7 +78,19 @@ Optional but strongly recommended — fill in as much as you can, it makes class
 
 ---
 
-## 4. Sign in (automatic)
+## 4. Create the Outlook categories (once)
+
+Microsoft Graph can apply categories to messages but cannot create the master category list for our
+account, so create these five categories **once** in Outlook:
+
+1. New Outlook: **Settings → Mail → Categories → New category**;
+   classic Outlook: right-click a message → **Categorize → Manage categories**;
+2. Names exactly: `S`, `A`, `B`, `C`, `Sum` (colours optional);
+3. Nothing else to do — the workflow applies these names automatically and never creates them.
+
+---
+
+## 5. Sign in (automatic)
 
 1. Publish the workflow and open **Access Point** → enable the **Schedule Trigger** (every 5 minutes);
 2. The first unsigned run sends a sign-in e-mail to your **Dify account e-mail**
@@ -92,7 +104,7 @@ Optional but strongly recommended — fill in as much as you can, it makes class
 
 ---
 
-## 5. First dry run (no write-back)
+## 6. First dry run (no write-back)
 
 1. `FORCE_ACTION=reset` → **Publish** → **Test Run** (clears the baseline; `last_seen` becomes empty);
 2. `FORCE_ACTION=auto`, `DRY_RUN=true` → **Publish** → **Test Run**;
@@ -100,18 +112,18 @@ Optional but strongly recommended — fill in as much as you can, it makes class
    `VALIDATE VERDICTS` has `failed=0`;
 4. The mailbox does not change (dry run).
 
-## 6. Real write-back
+## 7. Real write-back
 
 `DRY_RUN=false` → **Publish** → **Test Run**; Outlook should show S/A/B/C categories (S is flagged red).
 
-## 7. Go automatic
+## 8. Go automatic
 
 1. `FORCE_ACTION=auto`, `DRY_RUN=false` → **Publish**;
 2. **Access Point** → enable the **Schedule Trigger** (runs every 5 minutes).
 
 ---
 
-## 8. Daily use
+## 9. Daily use
 
 - New inbox mail is classified and labelled every 5 minutes;
 - **Every day at 00:00** a daily report is sent (classified mail of the last day);
@@ -237,7 +249,18 @@ Settings → Environment Variables，**只需要改 2 个**：
 
 ---
 
-## 4. 登录自己的邮箱（自动）
+## 4. 在邮箱里手动创建分类标签（只需一次）
+
+Microsoft Graph 可以给邮件套用分类，但无法为我们的账号创建 Outlook 的"主分类列表"，
+所以请在 Outlook 里**手动创建一次**这 5 个分类：
+
+1. 新版 Outlook：**设置 → 邮件 → 分类 → 新建分类**；经典版：右键邮件 → **分类 → 管理分类**；
+2. 名称完全一致：`S`、`A`、`B`、`C`、`Sum`（颜色可选）；
+3. 之后不用再管——工作流会自动套用这些名称，但不会自己创建。
+
+---
+
+## 5. 登录自己的邮箱（自动）
 
 1. Publish 工作流，打开 **Access Point** → 开启 **Schedule Trigger**（每 5 分钟）；
 2. 第一轮发现未登录 → 给你的 **Dify 账号邮箱**发登录邮件（设备码 + 微软授权链接 + 表单链接）；
@@ -250,25 +273,25 @@ Settings → Environment Variables，**只需要改 2 个**：
 
 ---
 
-## 5. 第一次试跑（不写回）
+## 6. 第一次试跑（不写回）
 
 1. `FORCE_ACTION=reset` → **Publish** → **Test Run**（清空基线，END 里 `last_seen` 为空）；
 2. `FORCE_ACTION=auto`、`DRY_RUN=true` → **Publish** → **Test Run**；
 3. 检查 TRACING：`COLLECT MAIL` 有候选、`CLASSIFY MAIL` 有输出、`VALIDATE VERDICTS` 的 `failed=0`；
 4. 邮箱不会有任何变化（dry run）。
 
-## 6. 正式写回
+## 7. 正式写回
 
 `DRY_RUN=false` → **Publish** → **Test Run**；Outlook 里出现 S/A/B/C 标签（S 带红旗）。
 
-## 7. 打开自动模式
+## 8. 打开自动模式
 
 1. `FORCE_ACTION=auto`、`DRY_RUN=false` → **Publish**；
 2. **Access Point** → 打开 **Schedule Trigger**（每 5 分钟自动运行一次）。
 
 ---
 
-## 8. 日常使用
+## 9. 日常使用
 
 - 收件箱新邮件会每 5 分钟自动分类、打标签；
 - **每天 0 点**自动发日报（最近 1 天已分类邮件）；**每周日 0 点**自动发周报（`SUMMARY_DAYS` 天，默认 7 天）；

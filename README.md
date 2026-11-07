@@ -103,7 +103,21 @@ These variables are optional but strongly recommended — edit them once, then P
 | `CATCHUP_DAYS` | `7` | how far back the daily catch-up scan looks |
 | `LETTERS` | `sabc` | default levels for manual/`sum` reports (`s` = S only, `sa` = S+A …) |
 
-### 4. Sign in (automatic)
+### 4. Create the Outlook categories (once)
+
+Microsoft Graph can apply categories to messages but cannot create Outlook's master category list for
+our account (that part is tied to the Outlook / Graph permissions we do not have). Create these five
+categories **once** in Outlook:
+
+1. New Outlook: **Settings → Mail → Categories → New category**; classic Outlook: right-click a
+   message → **Categorize → Manage categories**;
+2. Add exactly: `S`, `A`, `B`, `C`, `Sum` (colours are optional);
+3. The workflow only *applies* these names, it never creates them.
+
+Without this step the workflow still writes the names onto messages, but they may appear as
+plain/unlisted labels instead of proper Outlook categories.
+
+### 5. Sign in (automatic)
 
 1. Open **Access Point** and enable the **Schedule Trigger** (every 5 minutes);
 2. The first unsigned run e-mails a sign-in message to your **Dify account e-mail**
@@ -111,7 +125,7 @@ These variables are optional but strongly recommended — edit them once, then P
 3. Authorize in the browser → open the form link → click **I have completed the sign-in**;
 4. The run resumes → `Poll sign-in` → `signed_in=true`; the next round starts classifying.
 
-### 5. Go automatic
+### 6. Go automatic
 
 `FORCE_ACTION=auto`, `DRY_RUN=false` → Publish → enable the Schedule Trigger.
 
@@ -187,6 +201,8 @@ Also possible without e-mail: set `FORCE_ACTION=sum` → Publish → Test Run, a
 2. **Dify environment variable types** are `string` / `number` / `secret` only (a boolean causes a draft 400).
 3. **Code nodes must define `def main(...)`** and their return keys must match the declared outputs exactly (the generators validate this).
 4. **Re-installing the plugin clears the Microsoft token**, so you have to sign in again.
+5. **Outlook categories must exist once**: Graph can apply category names but cannot create the
+   master category list; create `S` / `A` / `B` / `C` / `Sum` once in Outlook.
 5. At most 2 triggers per workflow on Dify Cloud Sandbox; this version uses a single Schedule trigger.
 6. Real-time "new mail" triggers (Graph change subscriptions) are not implemented; the workflow polls every 5 minutes.
 
@@ -337,14 +353,25 @@ Settings → Environment Variables：
 | `CATCHUP_DAYS` | `7` | 每天补扫回看的天数 |
 | `LETTERS` | `sabc` | 手动/`sum` 报告的默认级别（`s`=只 S，`sa`=S+A…） |
 
-### 4. 登录（自动）
+### 4. 在邮箱里手动创建分类标签（只需一次）
+
+Microsoft Graph 可以给邮件**套用**分类，但无法为我们的账号创建 Outlook 的"主分类列表"（这部分受 Outlook / Graph 权限限制）。
+所以请在 Outlook 里**手动创建一次**这 5 个分类：
+
+1. 新版 Outlook：**设置 → 邮件 → 分类 → 新建分类**；经典版 Outlook：右键任意邮件 → **分类 → 管理分类**；
+2. 名称必须完全一致：`S`、`A`、`B`、`C`、`Sum`（颜色可选）；
+3. 工作流只会**套用**这些名称，不会自己创建。
+
+不建也能跑，但这些标签可能只以普通文字标签出现，而不是 Outlook 里带颜色的正式分类。
+
+### 5. 登录（自动）
 
 1. Access Point 打开 **Schedule Trigger**（每 5 分钟）；
 2. 第一轮发现未登录 → 工作流给 **Dify 账号邮箱**发登录邮件（设备码 + 微软授权链接 + 表单链接）；
 3. 浏览器授权 → 打开邮件里的表单 → 点 **I have completed the sign-in**；
 4. 运行恢复 → `Poll sign-in` → `signed_in=true`，下一轮开始正常分类。
 
-### 5. 开自动
+### 6. 开自动
 
 `FORCE_ACTION=auto`、`DRY_RUN=false` → Publish → 打开 Schedule Trigger。
 
@@ -416,6 +443,8 @@ Settings → Environment Variables：
 2. **Dify 环境变量类型**只能是 `string` / `number` / `secret`（boolean 会导致 draft 400）。
 3. **Code 节点必须 `def main(...)`**，返回字段必须与声明的输出参数完全一致（生成器已内置校验）。
 4. **重装插件会清掉 Microsoft token**，需要重新走一次登录。
+5. **分类标签需手动创建一次**：Graph 能套用分类名，但无法创建 Outlook 的主分类列表；
+   请先在 Outlook 里建好 `S` / `A` / `B` / `C` / `Sum`。
 5. 每工作流最多 2 个 Trigger（Cloud Sandbox）；本版本只用 1 个 Schedule。
 6. 实时"新邮件触发"（Graph 变更订阅）未实现，当前靠 5 分钟轮询。
 
