@@ -6,17 +6,7 @@ app:
   mode: workflow
   name: HKUST_AI_email_manager
   use_icon_as_answer_icon: false
-dependencies:
-- current_identifier: null
-  type: marketplace
-  value:
-    marketplace_plugin_unique_identifier: langgenius/openai:1.1.0@95f7de6ee42124cb7649f20d3f175c5b0adb66ad92640a97e4027c15b266141c
-    version: null
-- current_identifier: null
-  type: package
-  value:
-    plugin_unique_identifier: mikasss666/email_manager:0.1.4@f47ad3fe9046d1333d110b521e24ddd639fa226e9447e0dc677cada713028440
-    version: null
+dependencies: []
 kind: app
 site:
   chat_color_theme: null
