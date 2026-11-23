@@ -7,9 +7,9 @@ identity:
     zh_Hans: "自检"
 description:
   human:
-    en_US: "Read-only self check: credential, Microsoft account, inbox size."
-    zh_Hans: "Read-only self check: credential, Microsoft account, inbox size."
-  llm: "Read-only self check: credential, Microsoft account, inbox size."
+    en_US: "Read-only self check: credential, Microsoft account, inbox size, Outlook categories."
+    zh_Hans: "Read-only self check: credential, Microsoft account, inbox size, Outlook categories."
+  llm: "Read-only self check: credential, Microsoft account, inbox size, Outlook categories."
 parameters:
 output_schema:
   type: object
@@ -32,6 +32,15 @@ output_schema:
     token_expires_in:
       type: number
       description: "Seconds until the access token expires"
+    last_signed_in_at:
+      type: string
+      description: "Local timestamp of the last successful sign-in"
+    missing_categories_json:
+      type: string
+      description: "Required Outlook categories that are missing (JSON array)"
+    categories_message:
+      type: string
+      description: "Human-readable category hint"
     error:
       type: string
       description: "Why the tool stopped, empty on success"

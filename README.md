@@ -9,8 +9,8 @@ The workflow signs in with a Microsoft device code, classifies school mail into 
 writes the categories back to Outlook, and sends daily / weekly / on-demand `sum` HTML reports.
 
 > **Status**: v1.0 — verified on Dify Cloud (sign-in, classification, write-back, reports).
-> - Plugin **0.1.4**, workflow **86 nodes / 90 edges**, a single Schedule Trigger;
-> - Offline checks: DSL validation, all Code nodes smoke-tested, pipeline sample, 29 unit tests;
+> - Plugin **0.2.0**, workflow **91 nodes / 95 edges**, a single Schedule Trigger;
+> - Offline checks: DSL validation, all Code nodes smoke-tested, pipeline sample, 32 unit tests;
 > - A new user only fills **2 environment variables** (`EMAIL`, `RECIPIENT`); sign-in happens automatically through Dify e-mail.
 
 > **Language policy**: all user-facing docs and release notes are bilingual — English first, Chinese second.
@@ -49,7 +49,7 @@ Full new-user walkthrough: **[docs/DISTRIBUTE.md](docs/DISTRIBUTE.md)**.
 ### 1. Install the plugin
 
 Dify → Integrations → Install → **Local Package File** → `email_manager.difypkg`.
-Open `Email Manager` afterwards — it should list **15 tools**.
+Open `Email Manager` afterwards — it should list **16 tools**.
 
 ### 2. Import the workflow
 
@@ -103,6 +103,22 @@ These variables are optional but strongly recommended — edit them once, then P
 | `CATCHUP_DAYS` | `7` | how far back the daily catch-up scan looks |
 | `LETTERS` | `sabc` | default levels for manual/`sum` reports (`s` = S only, `sa` = S+A …) |
 
+#### Graph scopes requested
+
+The device-code sign-in requests these scopes from Microsoft (user consent, no admin approval,
+no client secret):
+
+| Scope | Why it is needed |
+|---|---|
+| `offline_access` | refresh token, so the user does not sign in on every run |
+| `openid` / `profile` / `User.Read` | read the signed-in account (name / e-mail) |
+| `https://graph.microsoft.com/Mail.ReadWrite` | read inbox mail and write the S/A/B/C categories back |
+| `https://graph.microsoft.com/Mail.Send` | send the HTML report e-mail to `RECIPIENT` |
+
+Access is limited to the signed-in user's own mailbox. The scopes live in
+`lib/graph.py` (`DEFAULT_SCOPES`) and can be overridden per sign-in with the optional `scopes`
+parameter of the `auth_start` tool.
+
 ### 4. Create the Outlook categories (once)
 
 Microsoft Graph can apply categories to messages but cannot create Outlook's master category list for
@@ -124,6 +140,11 @@ plain/unlisted labels instead of proper Outlook categories.
    (device code + Microsoft link + form link);
 3. Authorize in the browser → open the form link → click **I have completed the sign-in**;
 4. The run resumes → `Poll sign-in` → `signed_in=true`; the next round starts classifying.
+5. After a successful sign-in the workflow runs **Check categories**: if any of `S` / `A` / `B` / `C` /
+   `Sum` is missing, the END output reports `missing_categories_json` with a hint. The `check` action
+   also shows the last successful sign-in time, token expiry and missing categories.
+6. To force a clean re-authentication later, use `FORCE_ACTION=relogin` (signs out, returns a fresh
+   device code / link in the END output).
 
 ### 6. Go automatic
 
@@ -185,6 +206,7 @@ Also possible without e-mail: set `FORCE_ACTION=sum` → Publish → Test Run, a
 | `auto` | automatic mode (default) |
 | `login` | force a fresh device code; END outputs `user_code` / `verification_uri` |
 | `login_poll` | poll sign-in; `signed_in=true` means success |
+| `relogin` | sign out, then return a fresh device code / link in the END output |
 | `report_daily` | send a daily report now (testing) |
 | `report_weekly` | send a weekly report now (testing) |
 | `sum` | send a manual summary now (levels from `LETTERS`) |
@@ -202,7 +224,9 @@ Also possible without e-mail: set `FORCE_ACTION=sum` → Publish → Test Run, a
 3. **Code nodes must define `def main(...)`** and their return keys must match the declared outputs exactly (the generators validate this).
 4. **Re-installing the plugin clears the Microsoft token**, so you have to sign in again.
 5. **Outlook categories must exist once**: Graph can apply category names but cannot create the
-   master category list; create `S` / `A` / `B` / `C` / `Sum` once in Outlook.
+   master category list; create `S` / `A` / `B` / `C` / `Sum` once in Outlook. After sign-in the
+   workflow checks them (`Check categories`); missing names are reported in the END output / `check`
+   action. Some account types do not expose the list through Graph — then a generic hint is shown.
 5. At most 2 triggers per workflow on Dify Cloud Sandbox; this version uses a single Schedule trigger.
 6. Real-time "new mail" triggers (Graph change subscriptions) are not implemented; the workflow polls every 5 minutes.
 
@@ -263,8 +287,8 @@ More:
 工作流自动完成：设备码登录 → 学校邮件判级（S/A/B/C）→ 写回 Outlook 分类 → 日报/周报 → `sum` 指令报告。
 
 > **状态**：v1.0（已在 Dify Cloud 上跑通：登录、判级、写回、报告）。
-> - 插件 **0.1.4**，工作流 **86 节点 / 90 边**，只有一个 Schedule Trigger；
-> - 离线检查：DSL 结构校验、全部 Code 节点冒烟、核心流水线样例、29 项单测；
+> - 插件 **0.2.0**，工作流 **91 节点 / 95 边**，只有一个 Schedule Trigger；
+> - 离线检查：DSL 结构校验、全部 Code 节点冒烟、核心流水线样例、32 项单测；
 > - 新用户只需要改 **2 个环境变量**（`EMAIL`、`RECIPIENT`），登录会通过 Dify 邮件自动完成。
 
 **GitHub**：<https://github.com/MiKasss666/HKUST_AI_email_manager>
@@ -300,7 +324,7 @@ More:
 ### 1. 装插件
 
 Dify → Integrations → Install → **Local Package File** → 选 `build/email_manager.difypkg`。
-装好后点开 `Email Manager`，应有 **15 个工具**。
+装好后点开 `Email Manager`，应有 **16 个工具**。
 
 ### 2. 导入工作流
 
@@ -353,6 +377,20 @@ Settings → Environment Variables：
 | `CATCHUP_DAYS` | `7` | 每天补扫回看的天数 |
 | `LETTERS` | `sabc` | 手动/`sum` 报告的默认级别（`s`=只 S，`sa`=S+A…） |
 
+#### 请求的 Graph 权限（scopes）
+
+设备码登录会向微软请求以下权限（用户同意即可，不需要管理员批准，也不需要 client secret）：
+
+| Scope | 用途 |
+|---|---|
+| `offline_access` | 刷新令牌，避免每次运行都要重新登录 |
+| `openid` / `profile` / `User.Read` | 读取当前登录账号（姓名/邮箱） |
+| `https://graph.microsoft.com/Mail.ReadWrite` | 读取收件箱邮件并把 S/A/B/C 分类写回 |
+| `https://graph.microsoft.com/Mail.Send` | 把 HTML 总结邮件发送到 `RECIPIENT` |
+
+权限仅限登录者本人的邮箱。默认值在 `lib/graph.py` 的 `DEFAULT_SCOPES`，也可以在调用
+`auth_start` 时用可选的 `scopes` 参数覆盖。
+
 ### 4. 在邮箱里手动创建分类标签（只需一次）
 
 Microsoft Graph 可以给邮件**套用**分类，但无法为我们的账号创建 Outlook 的"主分类列表"（这部分受 Outlook / Graph 权限限制）。
@@ -370,6 +408,10 @@ Microsoft Graph 可以给邮件**套用**分类，但无法为我们的账号创
 2. 第一轮发现未登录 → 工作流给 **Dify 账号邮箱**发登录邮件（设备码 + 微软授权链接 + 表单链接）；
 3. 浏览器授权 → 打开邮件里的表单 → 点 **I have completed the sign-in**；
 4. 运行恢复 → `Poll sign-in` → `signed_in=true`，下一轮开始正常分类。
+5. 登录成功后工作流会执行 **Check categories**：如果缺少 `S` / `A` / `B` / `C` / `Sum` 中的任何一个，
+   END 输出会给出 `missing_categories_json` 和提示；`FORCE_ACTION=check` 还会显示上次成功登录时间、
+   token 过期时间和缺失的分类。
+6. 之后想强制重新登录：`FORCE_ACTION=relogin`（退出登录并在 END 输出新设备码/授权链接）。
 
 ### 6. 开自动
 
@@ -427,6 +469,7 @@ Microsoft Graph 可以给邮件**套用**分类，但无法为我们的账号创
 | `auto` | 自动模式（默认） |
 | `login` | 强制生成新设备码，END 输出 `user_code` / `verification_uri` |
 | `login_poll` | 轮询登录结果，`signed_in=true` 即成功 |
+| `relogin` | 退出登录，并在 END 输出新的设备码 / 授权链接 |
 | `report_daily` | 立即发日报（测试用） |
 | `report_weekly` | 立即发周报（测试用） |
 | `sum` | 立即发手动总结（级别取 `LETTERS`） |
@@ -444,7 +487,8 @@ Microsoft Graph 可以给邮件**套用**分类，但无法为我们的账号创
 3. **Code 节点必须 `def main(...)`**，返回字段必须与声明的输出参数完全一致（生成器已内置校验）。
 4. **重装插件会清掉 Microsoft token**，需要重新走一次登录。
 5. **分类标签需手动创建一次**：Graph 能套用分类名，但无法创建 Outlook 的主分类列表；
-   请先在 Outlook 里建好 `S` / `A` / `B` / `C` / `Sum`。
+   请先在 Outlook 里建好 `S` / `A` / `B` / `C` / `Sum`。登录后工作流会执行 `Check categories`
+   检查，缺失项会出现在 END 输出 / `check` 动作里；部分账号类型 Graph 无法读取该列表，此时会给出通用提示。
 5. 每工作流最多 2 个 Trigger（Cloud Sandbox）；本版本只用 1 个 Schedule。
 6. 实时"新邮件触发"（Graph 变更订阅）未实现，当前靠 5 分钟轮询。
 

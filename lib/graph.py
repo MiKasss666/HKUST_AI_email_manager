@@ -33,6 +33,10 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from . import mailmeta
 from . import state as state_mod
 
+# Re-exported for convenience: a temporary mailbox problem is raised as this
+# exception so the workflow can retry without advancing its baseline.
+MailboxUnavailable = mailmeta.MailboxUnavailable
+
 GRAPH = "https://graph.microsoft.com/v1.0"
 LOGIN = "https://login.microsoftonline.com/{tenant}/oauth2/v2.0"
 DEVICE_GRANT = "urn:ietf:params:oauth:grant-type:device_code"
@@ -248,6 +252,9 @@ def _save_token(storage, payload: Dict[str, Any], client_id: str, scopes: str,
         "expires_at": time.time() + max(60, expires_in),
         "account": previous.get("account") or "",
         "tenant": previous.get("tenant") or "",
+        "signed_in_at": previous.get("signed_in_at") or "",
+        "last_refresh_at": previous.get("last_refresh_at") or "",
+        "refresh_count": int(previous.get("refresh_count") or 0),
         "saved_at": datetime.now().isoformat(timespec="seconds"),
     }
     _set_json(storage, TOKEN_KEY, token)
@@ -350,6 +357,9 @@ def device_poll(storage) -> Dict[str, Any]:
         token = _save_token(storage, payload, pending.get("client_id", ""),
                             pending.get("scopes", ""))
         token["tenant"] = pending.get("tenant", "")
+        now_iso = datetime.now().isoformat(timespec="seconds")
+        token["signed_in_at"] = now_iso
+        token["last_refresh_at"] = now_iso
         _set_json(storage, TOKEN_KEY, token)
         try:
             me = graph_call(token["access_token"], "GET",
@@ -393,22 +403,38 @@ def _refresh(storage, token: Dict[str, Any]) -> Dict[str, Any]:
     if not refresh_token or not client_id:
         raise AuthRequired("No refresh token. Please sign in again.")
     tenant = token.get("tenant") or "common"
-    status, payload, _headers = _post_form(_token_url(tenant), {
-        "grant_type": "refresh_token",
-        "client_id": client_id,
-        "refresh_token": refresh_token,
-        "scope": token.get("scopes") or DEFAULT_SCOPES,
-    })
+    status, payload, _headers = 0, {}, {}
+    for attempt in range(MAX_ATTEMPTS):
+        status, payload, _headers = _post_form(_token_url(tenant), {
+            "grant_type": "refresh_token",
+            "client_id": client_id,
+            "refresh_token": refresh_token,
+            "scope": token.get("scopes") or DEFAULT_SCOPES,
+        })
+        if status == 200 and isinstance(payload, dict) and payload.get("access_token"):
+            break
+        transient = status == 0 or status in RETRY_STATUS or status >= 500
+        if not transient or attempt == MAX_ATTEMPTS - 1:
+            break
+        time.sleep(min(8, 2 ** attempt))
     if status == 200 and isinstance(payload, dict) and payload.get("access_token"):
         new_token = _save_token(storage, payload, client_id,
                                 token.get("scopes") or DEFAULT_SCOPES, previous=token)
         new_token["account"] = token.get("account", "")
         new_token["tenant"] = token.get("tenant", "")
+        new_token["last_refresh_at"] = datetime.now().isoformat(timespec="seconds")
+        new_token["refresh_count"] = int(token.get("refresh_count") or 0) + 1
         _set_json(storage, TOKEN_KEY, new_token)
         return new_token
     if status == 0 or status >= 500:
         raise MailboxUnavailable(
             "Cannot reach Microsoft to renew the credential: " + _explain(status, payload)[:200])
+    if isinstance(payload, dict) and str(payload.get("error") or "").lower() in (
+            "invalid_grant", "invalid_client", "unauthorized_client"):
+        _del(storage, TOKEN_KEY)
+        raise AuthRequired(
+            "The stored credential is no longer valid (" +
+            _explain(status, payload)[:160] + "). Please sign in again.")
     raise AuthRequired(
         "The credential expired and could not be renewed (" +
         _explain(status, payload)[:200] + "). Please sign in again.")
@@ -726,6 +752,65 @@ def send_mail(storage, to: str, subject: str, html: str) -> None:
         },
         "saveToSentItems": True,
     })
+
+
+WANTED_CATEGORIES = ("S", "A", "B", "C", "Sum")
+
+
+def auth_details(storage) -> Dict[str, Any]:
+    """Detailed, human-friendly sign-in state (for status/health displays)."""
+    token = load_token(storage)
+    known = signed_in(storage)
+    expires = 0
+    if token.get("expires_at"):
+        expires = int(max(0, float(token.get("expires_at")) - time.time()))
+    return {
+        "signed_in": bool(known),
+        "account": str(token.get("account") or ""),
+        "token_expires_in": expires,
+        "last_signed_in_at": str(token.get("signed_in_at") or ""),
+        "last_refresh_at": str(token.get("last_refresh_at") or ""),
+        "refresh_count": int(token.get("refresh_count") or 0),
+        "scopes": str(token.get("scopes") or DEFAULT_SCOPES),
+    }
+
+
+def check_categories(storage) -> Dict[str, Any]:
+    """Check the Outlook master category list for the S/A/B/C/Sum labels.
+
+    Microsoft Graph does not expose master categories for every account type;
+    when the endpoint is unavailable the result is "supported=False" with an
+    explanatory message instead of an error, so the workflow can warn the user
+    without failing the round.
+    """
+    result: Dict[str, Any] = {
+        "supported": False,
+        "present": [],
+        "missing": list(WANTED_CATEGORIES),
+        "message": "",
+    }
+    try:
+        token = _access(storage, require_write=False)
+        payload = graph_call(
+            token, "GET",
+            "https://graph.microsoft.com/beta/me/outlook/masterCategories?$select=displayName")
+    except (GraphError, MailboxUnavailable) as ex:
+        result["message"] = (
+            "Could not read the Outlook category list automatically (" + str(ex)[:160] +
+            "). Create S/A/B/C/Sum once in Outlook -> Settings -> Mail -> Categories.")
+        return result
+    names = [str(item.get("displayName") or "") for item in (payload or {}).get("value") or []]
+    present = [name for name in WANTED_CATEGORIES if name in names]
+    missing = [name for name in WANTED_CATEGORIES if name not in names]
+    result.update({
+        "supported": True,
+        "present": present,
+        "missing": missing,
+        "message": ("All required Outlook categories exist." if not missing else
+                    "Missing Outlook categories: " + ", ".join(missing) +
+                    ". Create them once in Outlook -> Settings -> Mail -> Categories."),
+    })
+    return result
 
 
 def check(storage) -> Dict[str, Any]:

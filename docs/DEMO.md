@@ -28,8 +28,12 @@ the plugin are needed to run it end-to-end (see [`docs/DISTRIBUTE.md`](DISTRIBUT
 | Daily 00:00 / Sunday 00:00 reports | workflow nodes `Scheduled report?` → `Send report` |
 | `sum` command by e-mail | `Plan round` → `Tag control mail` → report nodes |
 | Batch safety: ≤20 mails per run, backlog drains over runs, failed batch retried next run | `Collect mail`, `Plan round`, baseline-advance logic |
+| Sign-in health: last sign-in time, token expiry, refresh count | `auth_status` tool + `check` action |
+| One-action re-authentication (`FORCE_ACTION=relogin`) | workflow `Re-authenticate?` → sign out → fresh device code |
+| Post-sign-in category check (`S`/`A`/`B`/`C`/`Sum`) | workflow `Check categories` node + `check` action |
+| Graph scopes documented per permission | README / DISTRIBUTE scope tables |
 
-Workflow size: **86 nodes / 90 edges**, DSL version 0.7.0, a single 5-minute Schedule Trigger.
+Workflow size: **91 nodes / 95 edges**, DSL version 0.7.0, a single 5-minute Schedule Trigger.
 
 ---
 
@@ -92,7 +96,9 @@ py -3 -m unittest discover -s tests
   approval for its login flow, and a Graph change-subscription trigger would cost far more consent
   work than it returns. The prototype polls every 5 minutes (user-adjustable).
 - **Outlook category definitions are created manually once** (S/A/B/C/Sum); Microsoft Graph cannot
-  create the master category list for this account, so the workflow only applies categories.
+  create the master category list for this account, so the workflow only applies categories. After
+  sign-in the workflow checks the list and reports missing names; on accounts where Graph does not
+  expose the list, a generic hint is shown instead.
 - **At most 20 mails are classified per batch.** A larger backlog is not lost: the first day clears
   up to two batches, and the automatic **daily catch-up** keeps picking up older unclassified mail
   (about 20 per day) until the backlog is gone — no user action is needed, but a very large backlog

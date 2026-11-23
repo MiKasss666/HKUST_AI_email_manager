@@ -306,6 +306,66 @@ class GraphHelperTests(unittest.TestCase):
         self.assertEqual(result["ignored_ids"], ["b"])
         self.assertFalse(result["transient"])
 
+    def test_auth_details_from_token(self):
+        storage = FakeStorage()
+        graph._set_json(storage, graph.TOKEN_KEY, {
+            "access_token": "a", "refresh_token": "r", "client_id": "c",
+            "scopes": "Mail.ReadWrite Mail.Send",
+            "expires_at": 9e18, "account": "me@ust.hk",
+            "signed_in_at": "2026-11-07T10:00:00",
+            "last_refresh_at": "2026-11-07T11:00:00",
+            "refresh_count": 2,
+        })
+        details = graph.auth_details(storage)
+        self.assertTrue(details["signed_in"])
+        self.assertEqual(details["account"], "me@ust.hk")
+        self.assertEqual(details["last_signed_in_at"], "2026-11-07T10:00:00")
+        self.assertEqual(details["last_refresh_at"], "2026-11-07T11:00:00")
+        self.assertEqual(details["refresh_count"], 2)
+        self.assertIn("Mail.ReadWrite", details["scopes"])
+
+    def test_check_categories_supported(self):
+        storage = FakeStorage()
+        graph._set_json(storage, graph.TOKEN_KEY, {
+            "access_token": "a", "refresh_token": "r", "client_id": "c",
+            "scopes": graph.DEFAULT_SCOPES, "expires_at": 9e18,
+        })
+        original = graph.graph_call
+
+        def fake_call(token, method, path, **kw):
+            return {"value": [{"displayName": "S"}, {"displayName": "A"},
+                             {"displayName": "Sum"}]}
+
+        graph.graph_call = fake_call
+        try:
+            result = graph.check_categories(storage)
+        finally:
+            graph.graph_call = original
+        self.assertTrue(result["supported"])
+        self.assertEqual(result["present"], ["S", "A", "Sum"])
+        self.assertEqual(result["missing"], ["B", "C"])
+        self.assertIn("Missing", result["message"])
+
+    def test_check_categories_unsupported(self):
+        storage = FakeStorage()
+        graph._set_json(storage, graph.TOKEN_KEY, {
+            "access_token": "a", "refresh_token": "r", "client_id": "c",
+            "scopes": graph.DEFAULT_SCOPES, "expires_at": 9e18,
+        })
+        original = graph.graph_call
+
+        def fake_call(token, method, path, **kw):
+            raise graph.GraphError("not supported", 400)
+
+        graph.graph_call = fake_call
+        try:
+            result = graph.check_categories(storage)
+        finally:
+            graph.graph_call = original
+        self.assertFalse(result["supported"])
+        self.assertEqual(result["missing"], list(graph.WANTED_CATEGORIES))
+        self.assertIn("Create S/A/B/C/Sum", result["message"])
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

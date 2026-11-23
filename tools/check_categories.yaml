@@ -1,0 +1,37 @@
+identity:
+  name: check_categories
+  display_name: "Check Categories"
+  author: mikasss666
+  label:
+    en_US: "Check Categories"
+    zh_Hans: "检查分类标签"
+description:
+  human:
+    en_US: "Check whether the Outlook categories S/A/B/C/Sum exist (uses the Graph master-category list when the account supports it, otherwise returns an explanatory message)."
+    zh_Hans: "Check whether the Outlook categories S/A/B/C/Sum exist (uses the Graph master-category list when the account supports it, otherwise returns an explanatory message)."
+  llm: "Check whether the Outlook categories S/A/B/C/Sum exist (uses the Graph master-category list when the account supports it, otherwise returns an explanatory message)."
+parameters:
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: "True when the tool finished"
+    supported:
+      type: boolean
+      description: "True when Graph could read the master category list"
+    present_json:
+      type: string
+      description: "Categories already present (JSON array)"
+    missing_json:
+      type: string
+      description: "Required categories that are missing (JSON array)"
+    message:
+      type: string
+      description: "Human-readable hint for the user"
+    error:
+      type: string
+      description: "Why the tool stopped, empty on success"
+extra:
+  python:
+    source: tools/check_categories.py

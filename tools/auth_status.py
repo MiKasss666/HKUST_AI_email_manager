@@ -4,13 +4,17 @@ from dify_plugin.entities.tool import ToolInvokeMessage
 
 from lib import graph, state
 from lib.outputs import run_tool
-import time
+
 
 DECLARED = {
     "success": False,
     "signed_in": False,
     "account": "",
     "token_expires_in": 0,
+    "last_signed_in_at": "",
+    "last_refresh_at": "",
+    "refresh_count": 0,
+    "scopes": "",
     "error": "",
 }
 
@@ -35,13 +39,4 @@ def _load_json_list(value):
 
 
 def _run(tool, params):
-    token = graph.load_token(tool.session.storage)
-    known = graph.signed_in(tool.session.storage)
-    expires = 0
-    if token.get("expires_at"):
-        expires = int(max(0, float(token.get("expires_at")) - time.time()))
-    return {
-        "signed_in": bool(known),
-        "account": str(token.get("account") or ""),
-        "token_expires_in": expires,
-    }
+    return graph.auth_details(tool.session.storage)

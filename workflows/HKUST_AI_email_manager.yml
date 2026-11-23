@@ -449,10 +449,10 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: tool
-      id: 1700000093-1700000020-false-target
+      id: 1700000093-1700000110-false-target
       source: '1700000093'
       sourceHandle: 'false'
-      target: '1700000020'
+      target: '1700000110'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -636,11 +636,11 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: end
-      id: 1700000080-1700000081-case-login-signed-target
+      id: 1700000080-1700000114-case-login-signed-target
       selected: false
       source: '1700000080'
       sourceHandle: case-login-signed
-      target: '1700000081'
+      target: '1700000114'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -675,11 +675,11 @@ workflow:
         isInLoop: false
         sourceType: if-else
         targetType: end
-      id: 1700000085-1700000081-case-quick-signed-target
+      id: 1700000085-1700000114-case-quick-signed-target
       selected: false
       source: '1700000085'
       sourceHandle: case-quick-signed
-      target: '1700000081'
+      target: '1700000114'
       targetHandle: target
       type: custom
       zIndex: 0
@@ -1370,6 +1370,66 @@ workflow:
       targetHandle: target
       type: custom
       zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: tool
+      id: 1700000110-1700000111-case-relogin-target
+      source: '1700000110'
+      sourceHandle: case-relogin
+      target: '1700000111'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: tool
+      id: 1700000110-1700000020-false-target
+      source: '1700000110'
+      sourceHandle: 'false'
+      target: '1700000020'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: tool
+      id: 1700000111-1700000112-source-target
+      source: '1700000111'
+      sourceHandle: source
+      target: '1700000112'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: end
+      id: 1700000112-1700000113-source-target
+      source: '1700000112'
+      sourceHandle: source
+      target: '1700000113'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: end
+      id: 1700000114-1700000081-source-target
+      source: '1700000114'
+      sourceHandle: source
+      target: '1700000081'
+      targetHandle: target
+      type: custom
+      zIndex: 0
     nodes:
     - data:
         code: "def main(force_action, letters_value, days_value):\n    import json\n\n    action = str(force_action or \"\").strip().lower()\n    # Dify environment variables cannot be empty, so \"auto\" (or any unknown marker\n    # such as null/none) means \"normal scheduled run\".\n    if action in (\"\", \"auto\", \"none\", \"null\", \"-\"):\n        action = \"auto\"\n    letters = str(letters_value or \"sabc\").strip() or \"sabc\"\n    days = int(days_value or 0)\n    ctx = {\n        \"source\": \"schedule\",\n        \"action\": action,\n        \"letters\": letters,\n        \"days\": days,\n        \"manual\": action != \"auto\",\n        \"authorized\": True,\n    }\n    return {\"ctx_json\": json.dumps(ctx, ensure_ascii=False)}\n"
@@ -1694,6 +1754,21 @@ workflow:
           - inbox_count
           value_type: number
           variable: inbox_count
+        - variable: last_signed_in_at
+          value_type: string
+          value_selector:
+          - '1700000012'
+          - last_signed_in_at
+        - variable: missing_categories_json
+          value_type: string
+          value_selector:
+          - '1700000012'
+          - missing_categories_json
+        - variable: categories_message
+          value_type: string
+          value_selector:
+          - '1700000012'
+          - categories_message
         selected: false
         title: End
         type: end
@@ -4304,6 +4379,16 @@ workflow:
           - workflow_run_id
           value_type: string
           variable: run_id_0081
+        - variable: missing_categories_json
+          value_type: string
+          value_selector:
+          - '1700000114'
+          - missing_json
+        - variable: categories_message
+          value_type: string
+          value_selector:
+          - '1700000114'
+          - message
         selected: false
         title: End
         type: end
@@ -4503,6 +4588,178 @@ workflow:
       targetPosition: left
       type: custom
       width: 244
+    - data:
+        cases:
+        - case_id: case-relogin
+          logical_operator: and
+          conditions:
+          - variable_selector:
+            - '1700000006'
+            - action
+            comparison_operator: is
+            value: relogin
+        desc: ''
+        logical_operator: and
+        selected: false
+        title: Re-authenticate?
+        type: if-else
+      height: 124
+      id: '1700000110'
+      position:
+        x: 1420
+        y: 640
+      positionAbsolute:
+        x: 1420
+        y: 640
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        desc: ''
+        is_team_authorization: true
+        plugin_id: mikasss666/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
+        provider_type: builtin
+        selected: false
+        title: Sign out (re-login)
+        tool_configurations: {}
+        tool_description: ''
+        tool_label: Sign out
+        tool_name: auth_sign_out
+        tool_node_version: '2'
+        tool_parameters: {}
+        type: tool
+      height: 52
+      id: '1700000111'
+      position:
+        x: 1680
+        y: 640
+      positionAbsolute:
+        x: 1680
+        y: 640
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        desc: ''
+        is_team_authorization: true
+        plugin_id: mikasss666/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
+        provider_type: builtin
+        selected: false
+        title: Start re-login
+        tool_configurations: {}
+        tool_description: ''
+        tool_label: Start device sign-in
+        tool_name: auth_start
+        tool_node_version: '2'
+        tool_parameters:
+          client_id:
+            type: variable
+            value:
+            - env
+            - CLIENT_ID
+          force_new:
+            type: constant
+            value: true
+          tenant:
+            type: variable
+            value:
+            - env
+            - TENANT
+        type: tool
+      height: 52
+      id: '1700000112'
+      position:
+        x: 1940
+        y: 640
+      positionAbsolute:
+        x: 1940
+        y: 640
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        desc: ''
+        outputs:
+        - variable: user_code
+          value_type: string
+          value_selector:
+          - '1700000112'
+          - user_code
+        - variable: verification_uri
+          value_type: string
+          value_selector:
+          - '1700000112'
+          - verification_uri
+        - variable: expires_in
+          value_type: number
+          value_selector:
+          - '1700000112'
+          - expires_in
+        - variable: fresh
+          value_type: boolean
+          value_selector:
+          - '1700000112'
+          - fresh
+        selected: false
+        title: End
+        type: end
+      height: 89
+      id: '1700000113'
+      position:
+        x: 2200
+        y: 640
+      positionAbsolute:
+        x: 2200
+        y: 640
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        desc: ''
+        is_team_authorization: true
+        plugin_id: mikasss666/email_manager
+        provider_id: mikasss666/email_manager/email_manager
+        provider_name: mikasss666/email_manager/email_manager
+        provider_type: builtin
+        selected: false
+        title: Check categories
+        tool_configurations: {}
+        tool_description: ''
+        tool_label: Check categories
+        tool_name: check_categories
+        tool_node_version: '2'
+        tool_parameters: {}
+        type: tool
+      height: 52
+      id: '1700000114'
+      position:
+        x: 3560
+        y: 1650
+      positionAbsolute:
+        x: 3560
+        y: 1650
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
     viewport:
       x: 461.5918011700651
       y: 291.3621432454424

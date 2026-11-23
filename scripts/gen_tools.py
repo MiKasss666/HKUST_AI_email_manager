@@ -46,20 +46,14 @@ tool(
      o("signed_in", "boolean", "True when a credential is stored"),
      o("account", "string", "Signed-in Microsoft account"),
      o("token_expires_in", "number", "Seconds until the access token expires (0 when unknown)"),
+     o("last_signed_in_at", "string", "Local timestamp of the last successful device-code sign-in"),
+     o("last_refresh_at", "string", "Local timestamp of the last successful token refresh"),
+     o("refresh_count", "number", "How many times the access token was refreshed"),
+     o("scopes", "string", "Graph scopes granted to the stored credential"),
      o("error", "string", "Why the tool stopped, empty on success")],
     """
-    token = graph.load_token(tool.session.storage)
-    known = graph.signed_in(tool.session.storage)
-    expires = 0
-    if token.get("expires_at"):
-        expires = int(max(0, float(token.get("expires_at")) - time.time()))
-    return {
-        "signed_in": bool(known),
-        "account": str(token.get("account") or ""),
-        "token_expires_in": expires,
-    }
+    return graph.auth_details(tool.session.storage)
     """,
-    "import time",
 )
 
 tool(
@@ -119,8 +113,31 @@ tool(
 )
 
 tool(
+    "check_categories", "Check Categories", "检查分类标签",
+    "Check whether the Outlook categories S/A/B/C/Sum exist (uses the Graph master-category list "
+    "when the account supports it, otherwise returns an explanatory message).",
+    [],
+    [o("success", "boolean", "True when the tool finished"),
+     o("supported", "boolean", "True when Graph could read the master category list"),
+     o("present_json", "string", "Categories already present (JSON array)"),
+     o("missing_json", "string", "Required categories that are missing (JSON array)"),
+     o("message", "string", "Human-readable hint for the user"),
+     o("error", "string", "Why the tool stopped, empty on success")],
+    """
+    import json
+    result = graph.check_categories(tool.session.storage)
+    return {
+        "supported": bool(result.get("supported")),
+        "present_json": json.dumps(result.get("present") or [], ensure_ascii=False),
+        "missing_json": json.dumps(result.get("missing") or [], ensure_ascii=False),
+        "message": str(result.get("message") or ""),
+    }
+    """,
+)
+
+tool(
     "check", "Check", "自检",
-    "Read-only self check: credential, Microsoft account, inbox size.",
+    "Read-only self check: credential, Microsoft account, inbox size, Outlook categories.",
     [],
     [o("success", "boolean", "True when the tool finished"),
      o("signed_in", "boolean", "True when signed in"),
@@ -128,9 +145,21 @@ tool(
      o("display_name", "string", "Display name"),
      o("inbox_count", "number", "Messages in the inbox"),
      o("token_expires_in", "number", "Seconds until the access token expires"),
+     o("last_signed_in_at", "string", "Local timestamp of the last successful sign-in"),
+     o("missing_categories_json", "string", "Required Outlook categories that are missing (JSON array)"),
+     o("categories_message", "string", "Human-readable category hint"),
      o("error", "string", "Why the tool stopped, empty on success")],
     """
-    return graph.check(tool.session.storage)
+    import json
+    result = graph.check(tool.session.storage)
+    details = graph.auth_details(tool.session.storage)
+    categories = graph.check_categories(tool.session.storage)
+    result.update({
+        "last_signed_in_at": details.get("last_signed_in_at", ""),
+        "missing_categories_json": json.dumps(categories.get("missing") or [], ensure_ascii=False),
+        "categories_message": str(categories.get("message") or ""),
+    })
+    return result
     """,
 )
 

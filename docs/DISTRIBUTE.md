@@ -30,7 +30,7 @@ Integrations → Install → Local Package File.
 **Option B**: Integrations → Install → **From GitHub** → paste `MiKasss666/HKUST_AI_email_manager`
 (the plugin source lives at this repository's root).
 
-After installing, open `Email Manager` — it should list **15 tools**.
+After installing, open `Email Manager` — it should list **16 tools**.
 
 ---
 
@@ -78,6 +78,21 @@ Optional but strongly recommended — fill in as much as you can, it makes class
 
 ---
 
+---
+
+## Graph scopes requested
+
+| Scope | Why it is needed |
+|---|---|
+| `offline_access` | refresh token, so the user does not sign in every run |
+| `openid` / `profile` / `User.Read` | read the signed-in account |
+| `https://graph.microsoft.com/Mail.ReadWrite` | read mail and write S/A/B/C categories back |
+| `https://graph.microsoft.com/Mail.Send` | send the HTML report to `RECIPIENT` |
+
+User-consent scopes only (no admin approval, no client secret); access is limited to the signed-in user's mailbox.
+
+---
+
 ## 4. Create the Outlook categories (once)
 
 Microsoft Graph can apply categories to messages but cannot create the master category list for our
@@ -97,10 +112,14 @@ account, so create these five categories **once** in Outlook:
    (device code + Microsoft link + form link);
 3. Authorize in the browser (school account, accept the permissions);
 4. Open the form link from the e-mail → click **I have completed the sign-in**;
-5. The run resumes → `Poll sign-in` → `signed_in=true` (the `account` field is your mailbox).
+5. The run resumes → `Poll sign-in` → `signed_in=true` (the `account` field is your mailbox);
+6. The workflow then runs **Check categories**: missing `S`/`A`/`B`/`C`/`Sum` names appear in the
+   END output (`missing_categories_json`); `FORCE_ACTION=check` also shows the last successful
+   sign-in time and token expiry.
 
 > If the e-mail never arrives, use the manual fallback: `FORCE_ACTION=login` → Publish → Test Run →
 > copy `user_code` / `verification_uri` from the END output, authorize, then `FORCE_ACTION=login_poll`.
+> To force a clean re-authentication later use `FORCE_ACTION=relogin`.
 
 ---
 
@@ -201,7 +220,7 @@ Integrations → Install → Local Package File → 选它。
 **方式 B**：Integrations → Install → **From GitHub** → 填 `MiKasss666/HKUST_AI_email_manager`
 （插件源码就在本仓库根目录）。
 
-装好后点开 `Email Manager`，应该看到 **15 个工具**。
+装好后点开 `Email Manager`，应该看到 **16 个工具**。
 
 ---
 
@@ -249,6 +268,21 @@ Settings → Environment Variables，**只需要改 2 个**：
 
 ---
 
+---
+
+## 请求的 Graph 权限（scopes）
+
+| Scope | 用途 |
+|---|---|
+| `offline_access` | 刷新令牌，避免每次运行都重新登录 |
+| `openid` / `profile` / `User.Read` | 读取当前登录账号 |
+| `https://graph.microsoft.com/Mail.ReadWrite` | 读取邮件并写回 S/A/B/C 分类 |
+| `https://graph.microsoft.com/Mail.Send` | 把 HTML 报告发到 `RECIPIENT` |
+
+这些都是用户同意即可的权限（不需要管理员批准、不需要 client secret），且只作用于登录者本人的邮箱。
+
+---
+
 ## 4. 在邮箱里手动创建分类标签（只需一次）
 
 Microsoft Graph 可以给邮件套用分类，但无法为我们的账号创建 Outlook 的"主分类列表"，
@@ -266,10 +300,13 @@ Microsoft Graph 可以给邮件套用分类，但无法为我们的账号创建 
 2. 第一轮发现未登录 → 给你的 **Dify 账号邮箱**发登录邮件（设备码 + 微软授权链接 + 表单链接）；
 3. 浏览器里用学校账号授权（首次接受权限）；
 4. 打开邮件里的表单链接 → 点 **I have completed the sign-in**；
-5. 运行恢复 → `Poll sign-in` → `signed_in=true`（`account` 就是你的邮箱）。
+5. 运行恢复 → `Poll sign-in` → `signed_in=true`（`account` 就是你的邮箱）；
+6. 随后工作流会执行 **Check categories**：缺失的 `S`/`A`/`B`/`C`/`Sum` 会出现在 END 输出
+   （`missing_categories_json`）；`FORCE_ACTION=check` 还会显示上次成功登录时间和 token 过期时间。
 
 > 没收到邮件时的兜底：`FORCE_ACTION=login` → Publish → Test Run → 从 END 输出复制
 > `user_code` / `verification_uri`，授权后再 `FORCE_ACTION=login_poll`。
+> 之后想彻底重新登录：`FORCE_ACTION=relogin`。
 
 ---
 

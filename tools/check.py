@@ -13,6 +13,9 @@ DECLARED = {
     "display_name": "",
     "inbox_count": 0,
     "token_expires_in": 0,
+    "last_signed_in_at": "",
+    "missing_categories_json": "",
+    "categories_message": "",
     "error": "",
 }
 
@@ -37,4 +40,13 @@ def _load_json_list(value):
 
 
 def _run(tool, params):
-    return graph.check(tool.session.storage)
+    import json
+    result = graph.check(tool.session.storage)
+    details = graph.auth_details(tool.session.storage)
+    categories = graph.check_categories(tool.session.storage)
+    result.update({
+        "last_signed_in_at": details.get("last_signed_in_at", ""),
+        "missing_categories_json": json.dumps(categories.get("missing") or [], ensure_ascii=False),
+        "categories_message": str(categories.get("message") or ""),
+    })
+    return result
