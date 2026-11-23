@@ -158,6 +158,32 @@ def validate(path: str) -> list:
     return problems
 
 
+def check_provider_registration() -> list:
+    """Every tools/*.yaml must be listed in provider/email_manager.yaml.
+
+    A tool file that is not registered in the provider still builds into the
+    package, but Dify only exposes the registered ones (this happened with
+    check_categories: workflow failed with "Tool ... not found").
+    """
+    problems = []
+    provider_path = os.path.join(ROOT, "provider", "email_manager.yaml")
+    try:
+        with open(provider_path, "r", encoding="utf-8") as fh:
+            provider = yaml.safe_load(fh)
+    except OSError:
+        return ["provider/email_manager.yaml not found"]
+    listed = {os.path.basename(str(item)) for item in provider.get("tools") or []}
+    on_disk = {os.path.basename(path)
+               for path in glob.glob(os.path.join(_TOOLS_DIR, "*.yaml"))}
+    missing = sorted(on_disk - listed)
+    extra = sorted(listed - on_disk)
+    if missing:
+        problems.append("provider does not register tools: " + ", ".join(missing))
+    if extra:
+        problems.append("provider registers missing tool files: " + ", ".join(extra))
+    return problems
+
+
 def main() -> int:
     failed = False
     for path in FILES:
@@ -166,6 +192,11 @@ def main() -> int:
         for problem in problems:
             print("  -", problem)
             failed = True
+    provider_problems = check_provider_registration()
+    print("provider tools registration", "OK" if not provider_problems else "PROBLEMS")
+    for problem in provider_problems:
+        print("  -", problem)
+        failed = True
     return 1 if failed else 0
 
 

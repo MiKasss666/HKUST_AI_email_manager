@@ -1,5 +1,5 @@
 identity:
-  author: your-github-handle
+  author: mikasss666
   name: email_manager
   label:
     en_US: Email Manager
@@ -17,6 +17,7 @@ tools:
   - tools/auth_poll.yaml
   - tools/auth_sign_out.yaml
   - tools/check.yaml
+  - tools/check_categories.yaml
   - tools/collect.yaml
   - tools/collect_recent.yaml
   - tools/apply.yaml

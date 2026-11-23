@@ -9,7 +9,7 @@ The workflow signs in with a Microsoft device code, classifies school mail into 
 writes the categories back to Outlook, and sends daily / weekly / on-demand `sum` HTML reports.
 
 > **Status**: v1.0 — verified on Dify Cloud (sign-in, classification, write-back, reports).
-> - Plugin **0.2.0**, workflow **91 nodes / 95 edges**, a single Schedule Trigger;
+> - Plugin **0.2.1**, workflow **91 nodes / 95 edges**, a single Schedule Trigger;
 > - Offline checks: DSL validation, all Code nodes smoke-tested, pipeline sample, 32 unit tests;
 > - A new user only fills **2 environment variables** (`EMAIL`, `RECIPIENT`); sign-in happens automatically through Dify e-mail.
 
@@ -287,7 +287,7 @@ More:
 工作流自动完成：设备码登录 → 学校邮件判级（S/A/B/C）→ 写回 Outlook 分类 → 日报/周报 → `sum` 指令报告。
 
 > **状态**：v1.0（已在 Dify Cloud 上跑通：登录、判级、写回、报告）。
-> - 插件 **0.2.0**，工作流 **91 节点 / 95 边**，只有一个 Schedule Trigger；
+> - 插件 **0.2.1**，工作流 **91 节点 / 95 边**，只有一个 Schedule Trigger；
 > - 离线检查：DSL 结构校验、全部 Code 节点冒烟、核心流水线样例、32 项单测；
 > - 新用户只需要改 **2 个环境变量**（`EMAIL`、`RECIPIENT`），登录会通过 Dify 邮件自动完成。
 
